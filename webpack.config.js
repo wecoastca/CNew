@@ -37,6 +37,13 @@ module.exports = {
 					{
 					test: /\.(eot|svg|ttf|woff|woff2)$/,
 					use: 'url-loader?name=[name].[ext]'
+					},
+					{
+						test: /\.(png|jpe?g|gif)$/i,
+						use: [
+						  {
+							loader: 'file-loader',
+						  }],
 					}]
     },
 	plugins: [
