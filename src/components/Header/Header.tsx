@@ -3,6 +3,7 @@ import logo from "../../public/images/logo.png";
 import "./Header.css";
 import { SearchLine } from "../SearchLine/SearchLine";
 
+
 export class Header extends React.Component {
   render() {
     return (
@@ -24,16 +25,16 @@ export class Header extends React.Component {
             </li>
           </ul>
         </div>
-        <SearchLine/>
+        <SearchLine />
         <div className="sign-buttons">
           <div className="sign-buttons__sign-in">
-          <button >
-            Sign in
+            <button >
+              Sign in
           </button>
           </div>
           <div className="sign-buttons__sign-up">
-          <button className="sign-buttons__sign-up">
-            Sign up
+            <button className="sign-buttons__sign-up">
+              Sign up
           </button>
           </div>
         </div>
