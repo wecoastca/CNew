@@ -6,7 +6,6 @@ import { GenerateButton } from './../GenerateButton/GenerateButton';
 
 import './Content.css';
 
-
 export class Content extends React.Component {
     render() {
         return (

@@ -1,13 +1,16 @@
 import * as React from 'react';
 import './Scene.css';
 
+import { loadModel } from './../../helpers/loadModel.js';
+
 export class Scene extends React.Component {
-    render() {
-        return (
-            <div className="canvas-wrapper">
-                <canvas> canvas</canvas>
-            </div>
-        );
+    componentDidMount() {
+        loadModel();
+    }
+    render(
+    ) {
+        return <div className="canvas-wrapper" id="canvas-id"></div>;
+
     }
 
 
