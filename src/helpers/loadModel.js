@@ -22,11 +22,11 @@ export const loadModel = () => {
 
     const planeSize = 100;
 
-    texture.wrapS = THREE.RepeatWrapping;//повторяем обертку текстуры по горизонтали чтобы была шахмотная доска)
-    texture.wrapT = THREE.RepeatWrapping;//по вертикали
-    texture.magFilter = THREE.NearestFilter;//вокруг какой формы должна оборачиваться обертка
-    const repeats = planeSize / 100;//количество повторений текстуры
-    texture.repeat.set(repeats, repeats);//установка значений
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    texture.magFilter = THREE.NearestFilter;
+    const repeats = planeSize / 100;
+    texture.repeat.set(repeats, repeats);
 
     const planeGeo = new THREE.PlaneBufferGeometry(planeSize, planeSize);// Создание 3d модели в виде площадки для размещения модели с заданием ширины и высоты
     const planeMat = new THREE.MeshPhongMaterial({ //придаем площадке отблескивания при прокрутке и задаем дефолтные параметры для настройки материалов
@@ -34,14 +34,31 @@ export const loadModel = () => {
         side: THREE.DoubleSide,
     });
     const mesh = new THREE.Mesh(planeGeo, planeMat); //Сбор всех параметров геометрии и материалов для соединения в одну модель
-    mesh.rotation.x = Math.PI / 4; //Поворот 
+    mesh.rotation.x = Math.PI / 4; 
     scene.add(mesh); //Добавление на сцену модели площадки
+
+    const skyColor = 0xB1E1FF; 
+    const groundColor = 0xB97A20; 
+    const intensity = 1;
+    const Hlight = new THREE.HemisphereLight(skyColor, groundColor, intensity);//источник света, базирующийся за сценой с обработкой теней (сверху солнце снизу земля)
+    scene.add(Hlight);
 
     let renderer = new THREE.WebGLRenderer();
     renderer.setSize(container.clientWidth, container.clientHeight);
 
     container.appendChild(renderer.domElement);
 
+    const objTextureLoader = new THREE.TextureLoader();
+
+    const objTexture = objTextureLoader.load(
+        'public/models/example1/boq1_100k01.jpg',
+        (texture) => {
+            const material = new THREE.MeshBasicMaterial({ map: texture });
+        },
+        undefined,
+        (error) => { console.log('An error happened') }     
+        );
+//MTL loader can be removed because use Textureloader above for materials for obj
     const mtlLoader = new MTLLoader();
     mtlLoader.load('public/models/example1/boq1_100k.mtl', (mat) => {
 
@@ -50,12 +67,19 @@ export const loadModel = () => {
         objLoader.addMaterials(mat);
 
         objLoader.load('public/models/example1/boq1_100k.obj',
-            (e) => { scene.add(e); },
-            (xhr) => { console.log((xhr.loaded / xhr.total * 100) + '% loaded') },
+            (e) => {
+                e.traverse((child) => {
+                    if (child instanceof THREE.Mesh) {
+                        child.material.map = objTexture;
+                    }
+                })
+                scene.add(e);
+            },
+            (xhr) => { console.log((xhr.loaded / xhr.total * 100) + '% loaded Obj model') },
             (error) => { console.log('An error happened'); }
         );
     },
-        (xhr) => { console.log((xhr.loaded / xhr.total * 100) + '% loaded') },
+        (xhr) => { console.log((xhr.loaded / xhr.total * 100) + '% loaded MTL texture') },
         (error) => { console.log('An error happened'); })
 
 
