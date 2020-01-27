@@ -13,7 +13,7 @@ module.exports = {
 	},
 	output: {
 		path: path.resolve(__dirname, 'build'),
-		filename: '[name].js'
+		filename: '[name].js',
 	},
 	module: {
 		rules: [
@@ -49,7 +49,11 @@ module.exports = {
 	plugins: [
 		new HtmlWebpackPlugin({
 			template: path.resolve(__dirname, 'index.html')
-		})
+		}),
+		new CopyPlugin([{
+			from: path.resolve(__dirname,'src/public'),
+			to:'public'
+		}])
 	],
 	devServer: {
 		contentBase: path.join(__dirname, 'build', 'web'),
