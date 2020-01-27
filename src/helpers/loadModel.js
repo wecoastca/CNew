@@ -34,11 +34,11 @@ export const loadModel = () => {
         side: THREE.DoubleSide,
     });
     const mesh = new THREE.Mesh(planeGeo, planeMat); //Сбор всех параметров геометрии и материалов для соединения в одну модель
-    mesh.rotation.x = Math.PI / 4; 
+    mesh.rotation.x = Math.PI / 4;
     scene.add(mesh); //Добавление на сцену модели площадки
 
-    const skyColor = 0xB1E1FF; 
-    const groundColor = 0xB97A20; 
+    const skyColor = 0xB1E1FF;
+    const groundColor = 0xB97A20;
     const intensity = 1;
     const Hlight = new THREE.HemisphereLight(skyColor, groundColor, intensity);//источник света, базирующийся за сценой с обработкой теней (сверху солнце снизу земля)
     scene.add(Hlight);
@@ -56,33 +56,21 @@ export const loadModel = () => {
             const material = new THREE.MeshBasicMaterial({ map: texture });
         },
         undefined,
-        (error) => { console.log('An error happened') }     
-        );
-//MTL loader can be removed because use Textureloader above for materials for obj
-    const mtlLoader = new MTLLoader();
-    mtlLoader.load('public/models/example1/boq1_100k.mtl', (mat) => {
+        (error) => { console.log('An error happened') }
+    );
+    const objLoader = new OBJLoader2();
 
-        mat.preload();
-        const objLoader = new OBJLoader2();
-        objLoader.addMaterials(mat);
-
-        objLoader.load('public/models/example1/boq1_100k.obj',
-            (e) => {
-                e.traverse((child) => {
-                    if (child instanceof THREE.Mesh) {
-                        child.material.map = objTexture;
-                    }
-                })
-                scene.add(e);
-            },
-            (xhr) => { console.log((xhr.loaded / xhr.total * 100) + '% loaded Obj model') },
-            (error) => { console.log('An error happened'); }
-        );
-    },
-        (xhr) => { console.log((xhr.loaded / xhr.total * 100) + '% loaded MTL texture') },
-        (error) => { console.log('An error happened'); })
-
-
+    objLoader.load('public/models/example1/boq1_100k.obj',
+        (e) => {
+            e.traverse((child) => {
+                if (child instanceof THREE.Mesh) { child.material.map = objTexture; }
+            })
+            scene.add(e);
+        },
+        (xhr) => { console.log((xhr.loaded / xhr.total * 100) + '% loaded Obj model') },
+        (error) => { console.log('An error happened'); }
+    );
+    
     let controls = new OrbitControls(camera, renderer.domElement);
 
     function animate() {
