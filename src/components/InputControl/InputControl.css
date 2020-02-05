@@ -17,6 +17,21 @@
     height: 26px;
 }
 
+.input-control_select {
+    width: 100%;
+    border-color: #F7D0CB;
+    border-width: 1px;
+    border-radius: 3px;
+    border-style: solid;
+    height: 26px;
+}
+
+.input-control_select:focus {
+    -webkit-box-shadow: 1px 1px 8px 1px #F6D9D5;
+    box-shadow: 1px 1px 8px 1px #F6D9D5;
+    outline: #F6D9D5;
+}
+
 .input-control input:focus {
     -webkit-box-shadow: 1px 1px 8px 1px #F6D9D5;
     box-shadow: 1px 1px 8px 1px #F6D9D5;

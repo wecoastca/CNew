@@ -1,7 +1,5 @@
 import * as THREE from 'three';
-import { MTLLoader } from './../../node_modules/three/examples/jsm/loaders/MTLLoader';
 import { OBJLoader2 } from './../../node_modules/three/examples/jsm/loaders/OBJLoader2';
-import { TrackballControls } from './../../node_modules/three/examples/jsm/controls/TrackballControls';
 import { OrbitControls } from './../../node_modules/three/examples/jsm/controls/OrbitControls';
 
 
@@ -53,7 +51,7 @@ export const loadModel = () => {
     const objTexture = objTextureLoader.load(
         'public/models/example1/boq1_100k01.jpg',
         (texture) => {
-            const material = new THREE.MeshBasicMaterial({ map: texture });
+            new THREE.MeshBasicMaterial({ map: texture });
         },
         undefined,
         (error) => { console.log('An error happened') }
@@ -70,8 +68,8 @@ export const loadModel = () => {
         (xhr) => { console.log((xhr.loaded / xhr.total * 100) + '% loaded Obj model') },
         (error) => { console.log('An error happened'); }
     );
-    
-    let controls = new OrbitControls(camera, renderer.domElement);
+
+    new OrbitControls(camera, renderer.domElement);
 
     function animate() {
         requestAnimationFrame(animate);

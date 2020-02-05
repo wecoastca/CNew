@@ -17,14 +17,19 @@ export class Content extends React.Component {
                             1. Enter number of flowers <br />
                             you want to see in bouquete.
                         </p>
-                        <InputControl />
+                        <InputControl 
+                            type = 'NUMERIC'
+                            inputDefaultValue = {3}
+                            />
                     </div>
                     <div className="flowers-type">
                         <p className="suggest-text">
                             2. Choose <b>main type</b> of flowers <br />
                             you want to see in bouquete.
                         </p>
-                        <InputControl />
+                        <InputControl
+                            type = 'DROPDOWN'
+                         />
                     </div>
                     <div className="generate">
                         <p className="suggest-text">
