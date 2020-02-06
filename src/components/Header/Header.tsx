@@ -9,8 +9,8 @@ export class Header extends React.Component {
     return (
       <div className="header">
         <div className="brand">
-          <img src={logo} alt="logo" className="brand__img" />
-          <div className="brand__name">CONSTRUCTOR</div>
+          <a href="#"><img src={logo} alt="logo" className="brand__img" /></a>
+          <a className="brand__name" href="#"><div>CONSTRUCTOR</div></a>
         </div>
         <div className="menu">
           <ul className="menu__list">
@@ -30,12 +30,12 @@ export class Header extends React.Component {
           <div className="sign-buttons__sign-in">
             <button >
               Sign in
-          </button>
+            </button>
           </div>
           <div className="sign-buttons__sign-up">
             <button className="sign-buttons__sign-up">
               Sign up
-          </button>
+            </button>
           </div>
         </div>
       </div>
