@@ -52,7 +52,11 @@ module.exports = {
 	plugins: [
 		new HtmlWebpackPlugin({
 			template: path.resolve(__dirname, 'index.html')
-		})
+		}),
+		new CopyPlugin([{
+			from: path.resolve(__dirname,'public'),
+			to:'public'
+		}])
 	],
 	devServer: {
 		contentBase: path.join(__dirname, 'build'),
