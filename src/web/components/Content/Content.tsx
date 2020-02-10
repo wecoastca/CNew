@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { Scene } from '../Scene/Scene';
-import { InputControl } from '../InputControl/InputControl';
+import InputControl from '../InputControl/InputControl';
 import { GenerateButton } from '../GenerateButton/GenerateButton';
 
 import './Content.css';

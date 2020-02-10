@@ -12,41 +12,36 @@ type Flower = {
 }
 
 const FLOWERS_LIST: Array<Flower> = DATA;
-export class InputControl extends React.Component<Props>{
-    constructor(props: Props) {
-        super(props);
-    }
-
+class InputControl extends React.Component<Props> {
     getTypeOfInputElement = () => {
-        const { type } = this.props;
+      const { type } = this.props;
 
-        const dropdownMarkup = (
-            FLOWERS_LIST.map((flower) => {
-                return (<option key={flower.id.toString()} value={flower.id.toString()}>{flower.Name}</option>);
-            })
-        );
+      const dropdownMarkup = (
+        FLOWERS_LIST.map((flower) => (<option key={flower.id.toString()} value={flower.id.toString()}>{flower.Name}</option>)));
 
-        switch (type) {
-            case 'DROPDOWN':
-                return (
-                    <React.Fragment>
-                        <select className="input-control_select">
-                            {dropdownMarkup}
-                        </select>
-                    </React.Fragment>
-                );
-            case 'NUMERIC':
-                return (<input className="input-control_numeric" />);
-            default:
-                break;
-
-        }
+      switch (type) {
+        case 'DROPDOWN':
+          return (
+            <>
+              <select className="input-control_select">
+                {dropdownMarkup}
+              </select>
+            </>
+          );
+        case 'NUMERIC':
+          return (<input className="input-control_numeric" />);
+        default:
+          break;
+      }
     }
+
     render() {
-        return (
-            <div className="input-control">
-                {this.getTypeOfInputElement()}
-            </div>
-        );
+      return (
+        <div className="input-control">
+          {this.getTypeOfInputElement()}
+        </div>
+      );
     }
 }
+
+export default InputControl;
