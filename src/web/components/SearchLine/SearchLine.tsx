@@ -1,5 +1,5 @@
-import * as React from "react";
-import "./SearchLine.css";
+import * as React from 'react';
+import './SearchLine.css';
 import search from 'public/images/search.png';
 
 export class SearchLine extends React.Component {

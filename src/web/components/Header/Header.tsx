@@ -1,7 +1,7 @@
-import * as React from "react";
+import * as React from 'react';
 import logo from 'public/images/logo.png';
-import "./Header.css";
-import { SearchLine } from "../SearchLine/SearchLine";
+import './Header.css';
+import { SearchLine } from '../SearchLine/SearchLine';
 
 export class Header extends React.Component {
   render() {
@@ -27,7 +27,7 @@ export class Header extends React.Component {
         <SearchLine />
         <div className="sign-buttons">
           <div className="sign-buttons__sign-in">
-            <button >
+            <button>
               Sign in
             </button>
           </div>

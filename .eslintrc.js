@@ -6,6 +6,7 @@ module.exports = {
   extends: [
     'plugin:react/recommended',
     'airbnb',
+    "eslint:recommended"
   ],
   globals: {
     Atomics: 'readonly',
@@ -15,6 +16,7 @@ module.exports = {
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
+      tsx: true
     },
     ecmaVersion: 2018,
     sourceType: 'module',
@@ -24,5 +26,7 @@ module.exports = {
     '@typescript-eslint',
   ],
   rules: {
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx",".tsx",".ts"] }],
+    "no-tabs": 0
   },
 };
