@@ -1,0 +1,106 @@
+/*common styles for header*/
+
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap&subset=cyrillic');
+.header {
+    position: relative;
+    height: 70px;
+    background-color: rgb(49, 49, 49);
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+/*styles for Logo block*/
+
+.brand {
+    display: flex;
+    height: inherit;
+    width: 322px;
+    justify-content: space-between;
+}
+
+.brand__img {
+    width: 70px;
+    height: 100%;
+    position: relative;
+    top: -10px;
+    left: 18px;
+    display: inline-block;
+}
+
+.brand__name {
+    text-align: center;
+    font-size: 24px;
+    color: #FFFFFF;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    margin: auto;
+    text-decoration: none;
+}
+
+/* styles for menu list*/
+
+.menu {
+    width: 328px;
+}
+
+.menu__list {
+    display: flex;
+    justify-content: space-around;
+    list-style-type: none;
+    padding: 0px;
+    margin-top: 18px;
+    margin-bottom: 18px;
+}
+
+.menu__list li a {
+    display: block;
+    color: #FFFFFF;
+    padding: 8px 16px;
+    text-decoration: none;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+}
+
+.menu__list li a:hover {
+    background-color: #e3e4e6;
+    color: #313131;
+}
+
+/*styles for sign buttons*/
+
+.sign-buttons {
+    display: flex;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 15px;
+}
+
+.sign-buttons__sign-in {
+    border: none;
+    margin-right: auto;
+}
+
+.sign-buttons__sign-in button {
+    background-color: transparent;
+    border: none;
+    color: #FFFFFF;
+    font-size: 18px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    outline: #FFFFFF;
+}
+
+.sign-buttons__sign-up {
+    border: none;
+    border-radius: 100px;
+    margin-left: auto;
+}
+
+.sign-buttons__sign-up button {
+    color: #000000;
+    font-size: 18px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    outline: #FFFFFF;
+}

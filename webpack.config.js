@@ -9,7 +9,10 @@ module.exports = {
 		"app": "./src/index.tsx"
 	},
 	resolve: {
-		extensions: [".ts", ".tsx", ".js", ".css"]
+		extensions: [".ts", ".tsx", ".js", ".css"],
+		alias: {
+			public: path.join(__dirname,'public/')
+		}
 	},
 	output: {
 		path: path.resolve(__dirname, 'build'),
@@ -49,16 +52,11 @@ module.exports = {
 	plugins: [
 		new HtmlWebpackPlugin({
 			template: path.resolve(__dirname, 'index.html')
-		}),
-		new CopyPlugin([{
-			from: path.resolve(__dirname,'src/public'),
-			to:'public'
-		}])
+		})
 	],
 	devServer: {
-		contentBase: path.join(__dirname, 'build', 'web'),
+		contentBase: path.join(__dirname, 'build'),
 		compress: true,
 		port: 8000
 	}
 };
-
