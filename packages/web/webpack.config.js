@@ -6,7 +6,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 module.exports = {
 	mode: "development",
 	entry: {
-		"app": "./src/index.tsx"
+		"app": "./index.tsx"
 	},
 	resolve: {
 		extensions: [".ts", ".tsx", ".js", ".css"],
