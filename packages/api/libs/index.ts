@@ -10,37 +10,75 @@ app.use(bodyParser.json());
 
 app.use(logger('dev'));
 
-app.use(app.router);
+app.route('/api/v1/')
+  .get((req:express.Request, res:express.Response) => {
+    res.json({message: 'Entry in api'})
+  });
 
-app.get('/api/v1/', (req:express.Request, res:express.Response) => res.json({message: 'Entry in api'}));
+app.route('/api/v1/flowers')
+  .get((req:express.Request, res:express.Response) => {
+    res.send('Not implemented')
+  });
 
-app.get('/api/v1/flowers',(req:express.Request, res:express.Response) => res.send('Not implemented'));
+app.route('/api/v1/flowers/:id')
+  .get((req:express.Request, res:express.Response) => {
+    res.send('Not implemented')
+  });
 
-app.get('/api/v1/flowers/:id',(req:express.Request, res:express.Response) => res.send('Not implemented'));
+app.route('/api/v1/flowers/:id')
+  .post((req:express.Request, res:express.Response) => {
+    res.send('Not implemented')
+  });
 
-app.post('/api/v1/flowers/:id',(req:express.Request, res:express.Response) => res.send('Not implemented'));
+app.route('/api/v1/flowers/:id')
+  .delete((req:express.Request, res:express.Response) => {
+    res.send('Not implemented')
+  });
 
-app.put('/api/v1/flowers/:id',(req:express.Request, res:express.Response) => res.send('Not implemented'));
+  app.route('/api/v1/bouqutes')
+  .get((req:express.Request, res:express.Response) => {
+    res.send('Not implemented')
+  });
 
-app.delete('/api/v1/flowers',(req:express.Request, res:express.Response) => res.send('Not implemented'));
+app.route('/api/v1/bouqutes/:id')
+  .get((req:express.Request, res:express.Response) => {
+    res.send('Not implemented')
+  });
 
-app.get('/api/v1/bouqutes',(req:express.Request, res:express.Response) => res.send('Not implemented'));
+app.route('/api/v1/bouqutes/:id')
+  .post((req:express.Request, res:express.Response) => {
+    res.send('Not implemented')
+  });
 
-app.get('/api/v1/bouqutes/:id',(req:express.Request, res:express.Response) => res.send('Not implemented'));
+app.route('/api/v1/bouqutes/:id')
+  .delete((req:express.Request, res:express.Response) => {
+    res.send('Not implemented')
+  });
 
-app.post('/api/v1/bouqutes/:id',(req:express.Request, res:express.Response) => res.send('Not implemented'));
+app.route('/api/v1/users/')
+  .get((req:express.Request, res:express.Response) => {
+    res.send('Not implemented')
+  });
 
-app.delete('/api/v1/bouqutes/:id',(req:express.Request, res:express.Response) => res.send('Not implemented'));
+app.route('/api/v1/users/:id')
+  .get((req:express.Request, res:express.Response) => {
+    res.send('Not implemented')
+  });
 
-app.get('/api/v1/users/',(req:express.Request, res:express.Response) => res.send('Not implemented'));
+app.route('/api/v1/users/:id')
+  .post((req:express.Request, res:express.Response) => {
+    res.send('Not implemented')
+  });
 
-app.get('/api/v1/users/:id',(req:express.Request, res:express.Response) => res.send('Not implemented'));
+app.route('/api/v1/users/:id')
+  .put((req:express.Request, res:express.Response) => {
+    res.send('Not implemented')
+  });
 
-app.post('/api/v1/users/:id',(req:express.Request, res:express.Response) => res.send('Not implemented'));
-
-app.put('/api/v1/users/:id',(req:express.Request, res:express.Response) => res.send('Not implemented'));
-
-app.delete('/api/v1/users/:id',(req:express.Request, res:express.Response) => res.send('Not implemented'));
+app.route('/api/v1/users/:id')
+  .delete((req:express.Request, res:express.Response) => {
+    res.send('Not implemented')
+  });
 
 app.listen(PORT, () => {
   console.log(`server started at http://localhost:${PORT}`);
