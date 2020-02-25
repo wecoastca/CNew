@@ -6,3 +6,5 @@ let db = mongoose.connection;
 
 db.on('err',()=>console.log('connection db error'));
 db.once('open',()=>console.log('connected to db'));
+
+export default mongoose;

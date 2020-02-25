@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser  from 'body-parser';
 import logger from 'morgan';
+import mongoose from '../libs/db/db';
 
 const PORT = 8080;
 const app = express();
