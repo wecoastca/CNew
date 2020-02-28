@@ -23,5 +23,7 @@ Flower.virtual('model')
         return this.source && this.name;
     })
 
-export default mongoose.model('Flower',Flower);
 export { Flower };
+
+
+export default mongoose.model('Flower',Flower);

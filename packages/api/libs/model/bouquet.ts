@@ -14,6 +14,7 @@ let Bouquet = new Schema({
     userOwner: User,
     createdData: {type: Date, default: Date.now}
 })
+
 export { Bouquet };
 export default mongoose.model('Bouquet',Bouquet);
 

@@ -43,6 +43,5 @@ User.methods.validatePassword = function(password:string){
   return this.encryptPassword(password) === this.hashedPassword;
 }
 
-
 export default mongoose.model( 'User',User );
 export { User };
