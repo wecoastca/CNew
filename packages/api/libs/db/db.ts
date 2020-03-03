@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 
-mongoose.connect('mongodb+srv://dbservice-v2rry.mongodb.net/test');
+mongoose.connect('mongodb+srv://modelsstorage-auihi.mongodb.net:8080/constructor');
 
 let db = mongoose.connection;
 

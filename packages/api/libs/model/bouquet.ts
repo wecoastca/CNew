@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
-import Flower from './flower';
-import User from './user';
+import {Flower as FlowerSchema} from './flower';
+import {User as UserSchema} from './user';
 
 let Schema = mongoose.Schema;
 
@@ -10,8 +10,8 @@ let Bouquet = new Schema({
         required: true,
         unique: true
     },
-    content: [Flower],
-    userOwner: User,
+    content: [FlowerSchema],
+    userOwner: UserSchema,
     createdData: {type: Date, default: Date.now}
 })
 
