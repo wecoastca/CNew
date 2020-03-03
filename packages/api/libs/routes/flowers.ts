@@ -24,9 +24,9 @@ router.get('/',(req: express.Request, res: express.Response)=>{
 
 router.post('/', (req:express.Request, res:express.Response) => {
     let flower = new Flower({
-        id: req.body.id,
-        name: req.body.name,
-        source: req.body.source
+        id: req.params.id,
+        name: req.params.name,
+        source: req.params.source
     });
 
     flower.save((err)=>{
@@ -52,7 +52,7 @@ router.post('/', (req:express.Request, res:express.Response) => {
 })
 
 router.get('/:id', (req:express.Request, res: express.Response)=>{
-    Flower.findById(req.body.id,(err,docs)=>{
+    Flower.findById(req.params.id,(err,docs)=>{
 
         if(!docs){
             res.statusCode = 404;
@@ -82,7 +82,7 @@ router.get('/:id', (req:express.Request, res: express.Response)=>{
 })
 
 router.put('/:id', (req:express.Request, res: express.Response) => {
-    Flower.findByIdAndUpdate(req.body.id,{name:req.body.name, source: req.body.source}, (err, docs)=>{
+    Flower.findByIdAndUpdate(req.params.id,{name:req.params.name, source: req.params.source}, (err, docs)=>{
         if(!docs){
             res.statusCode = 404;
             logger.error('%d: flower was not found in mongo', res.statusCode);
@@ -116,7 +116,7 @@ router.put('/:id', (req:express.Request, res: express.Response) => {
 })
 
 router.delete('/:id', (req:express.Request, res: express.Response)=>{
-    Flower.findByIdAndDelete(req.body.id, (err, docs)=>{
+    Flower.findByIdAndDelete(req.params.id, (err, docs)=>{
         if(!docs){
             res.statusCode = 404;
             logger.error('%d: flower was not found in mongo', res.statusCode);

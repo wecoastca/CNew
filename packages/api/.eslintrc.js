@@ -1,13 +1,13 @@
 module.exports = {
-    "extends": [
+    extends: [
         "eslint:recommended",
         "plugin:node/recommended"
     ],
-    "parserOptions": {
+    parserOptions: {
         "ecmaVersion": 6,
         "sourceType": "module",
     },
-    "rules": {
+    rules: {
         "node/prefer-global/buffer": ["error", "always"],
         "node/prefer-global/console": ["error", "always"],
         "node/prefer-global/process": ["error", "always"],
@@ -15,6 +15,10 @@ module.exports = {
         "node/prefer-global/url": ["error", "always"],
         "node/prefer-promises/dns": "error",
         "node/prefer-promises/fs": "error"
-    }
+    },
+    parser: '@typescript-eslint/parser',
+    plugins: [
+        '@typescript-eslint',
+      ]
 };
   
