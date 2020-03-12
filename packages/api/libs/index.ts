@@ -4,8 +4,8 @@ import logger from 'morgan';
 import api from './routes/api';
 import { router as flowers } from './routes/flowers';
 import { router as bouquets} from './routes/bouquets';
+import config from './config';
 
-const PORT = 8080;
 const app = express();
 
 app.use(bodyParser.urlencoded({extended:true}));
@@ -45,6 +45,6 @@ app.route('/api/v1/users/:id')
     res.send('Not implemented')
   });
 
-app.listen(PORT, () => {
-  console.log(`server started at http://localhost:${PORT}`);
+app.listen(config.get('port'), () => {
+  console.log(`server started at http://localhost:${config.get('port')}`);
 });

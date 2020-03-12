@@ -1,6 +1,5 @@
 import * as express from 'express';
 import Flower from '../model/flower';
-import db from '../db/db';
 import logger from '../log';
 
 export const router = express.Router();

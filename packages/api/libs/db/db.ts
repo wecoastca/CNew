@@ -1,10 +1,20 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
+import logger from '../log';
+import config from '../config';
+//var logger = require('../log');
+//var mongoose = require('mongoose');
 
-mongoose.connect('mongodb+srv://modelsstorage-auihi.mongodb.net:8080/constructor');
+const options = {
+    user: config.get('mongoose:username'),
+    pass: config.get('mongoose:password'),
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}
+mongoose.connect(config.get('mongoose:uri'),options);
 
 let db = mongoose.connection;
 
-db.on('err',()=>console.log('connection db error'));
-db.once('open',()=>console.log('connected to db'));
+db.on('err',()=>logger.info('Failed connect to MongoDB'));
+db.once('open',()=>logger.info('Successful connection to MongoDB'));
 
 export default mongoose;

@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import mongoose from '../db/db';
 import * as crypto from 'crypto';
 
 let Schema = mongoose.Schema;

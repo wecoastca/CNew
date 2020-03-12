@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import mongoose from '../db/db';
 import {Flower as FlowerSchema} from './flower';
 import {User as UserSchema} from './user';
 
