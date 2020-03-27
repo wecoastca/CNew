@@ -1,5 +1,6 @@
 import * as React from 'react';
 import './FlowersFormContainer.css';
+import DropDownControl from '../DropDownControl/DropDownControl';
 import InputControl from '../InputControl/InputControl';
 import GenerateButton from '../GenerateButton/GenerateButton';
 
@@ -64,8 +65,6 @@ render() {
           </p>
           <InputControl
             handleChange={this.handleFlowersNumber}
-            type="NUMERIC"
-            inputDefaultValue={3}
           />
         </div>
         <div className="flowers-type">
@@ -78,8 +77,7 @@ render() {
             <br />
             you want to see in bouquete.
           </p>
-          <InputControl
-            type="DROPDOWN"
+          <DropDownControl
             handleChange={this.handleFlowersType}
           />
         </div>
