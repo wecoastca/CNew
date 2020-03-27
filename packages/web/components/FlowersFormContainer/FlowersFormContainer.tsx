@@ -19,10 +19,11 @@ export default class FlowersFormContainer extends React.Component<Props, State> 
 handleSubmit = (event) => {
   event.preventDefault();
 
-  // let stringForRequest = [this.state.numberOfFlowers, this.state.typeOfFlower]
-  // пока хз как можно передать параметр для поиска, но он должен быть после flowers
-  fetch('http://localhost:8080/api/v1/flowers/', {
-    method: 'GET',
+  const flowerName = this.state.typeOfFlower;
+  // это не работает если че
+  fetch('http://localhost:8080/api/v1/flowers/name', {
+    method: 'POST',
+    body: JSON.stringify(flowerName),
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',

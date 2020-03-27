@@ -50,6 +50,36 @@ router.post('/', (req:express.Request, res:express.Response) => {
     })
 })
 
+router.post('/name', (req:express.Request, res: express.Response)=>{
+    Flower.findOne({name:req.body},(err,doc)=>{
+
+        if(!doc){
+            res.statusCode = 404;
+            logger.error('%d: flower was not found in mongo', res.statusCode);
+            return res.json({
+                error: 'Not Found',
+                status: res.statusCode
+            })
+        }
+
+        if(!err){
+            return res.json({
+                status: 'Ok',
+                flower: doc
+            });
+        }
+        else{
+            res.statusCode = 500;
+            logger.error('Internal program error (%d): %s',res.statusCode,err.message);
+
+            return res.json({
+                error: err.message,
+                status: res.statusCode
+            })
+        }
+    })
+});
+
 router.get('/:id', (req:express.Request, res: express.Response)=>{
     Flower.findById(req.params.id,(err,docs)=>{
 

@@ -12,15 +12,42 @@ type Flower = {
     [key: string]: number | string | boolean
 }
 
-const FLOWERS_LIST: Array<Flower> = DATA;
-class InputControl extends React.Component<Props> {
+type State = {
+  FLOWERS_LIST: Array<Flower>
+}
+
+class InputControl extends React.Component<Props, State> {
+  constructor(props:Props) {
+    super(props);
+    this.state = { FLOWERS_LIST: [] };
+  }
+
+  fetchFlowersName() {
+    return fetch('http://localhost:8080/api/v1/flowers/', {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+        return response.json();
+      })
+      .then((FLOWERS_LIST) => { this.setState({ FLOWERS_LIST }); });
+  }
+
     getTypeOfInputElement = () => {
       const { type } = this.props;
-
+      const { FLOWERS_LIST } = this.state;
+      // TODO: Выпили отсюда этот кал. лучше всего раздели селект и инпут на два отдельных компонента, потому что нормальные люди их не соединяют
+      this.fetchFlowersName();
       const dropdownMarkup = (
-        FLOWERS_LIST.map((flower) => (
+        FLOWERS_LIST && FLOWERS_LIST.map((flower) => (
           <option key={flower.id.toString()} value={flower.id.toString()}>
-            {flower.Name}
+            {flower.name}
           </option>
         ))
       );
