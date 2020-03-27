@@ -19,8 +19,8 @@ export default class DropDownControl extends React.Component<Props, State> {
     super(props);
     this.state = { FLOWERS_LIST: [] };
   }
-
-  fetchFlowersName() {
+  //TODO: пофикси повторный запрос хуками или еще как-нибудь, а то периодически все равно в консоль падает 304
+  componentDidMount(){
     fetch('http://localhost:8080/api/v1/flowers/', {
       method: 'GET',
       headers: {
@@ -39,8 +39,6 @@ export default class DropDownControl extends React.Component<Props, State> {
 
   render() {
     const { FLOWERS_LIST } = this.state;
-
-    this.fetchFlowersName();
 
     const dropdownMarkup = (
       FLOWERS_LIST && FLOWERS_LIST.map((flower) => (
