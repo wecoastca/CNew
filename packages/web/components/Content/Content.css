@@ -3,35 +3,3 @@
     background-color: white;
     height: 100vh;
 }
-
-.inputs-wrapper {
-    display: flex;
-    justify-content: center;
-    margin-top: 46px;
-    font-family: 'Roboto', sans-serif;
-    font-weight: 300;
-    font-size: 16px;
-}
-
-.flowers-number {
-    margin-right: 6%;
-}
-
-.flowers-type {
-    margin-right: 6%;
-}
-
-.suggest-text {
-    margin-bottom: 36px;
-}
-
-.input-control {
-    border-radius: 3px;
-    border-color: #F7D0CB;
-    border-width: 1px;
-}
-
-.generate {
-    text-align: center;
-    border-radius: 0;
-}

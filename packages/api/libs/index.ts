@@ -1,12 +1,15 @@
 import express from 'express';
 import bodyParser  from 'body-parser';
 import logger from 'morgan';
+import cors from 'cors';
 import api from './routes/api';
 import { router as flowers } from './routes/flowers';
 import { router as bouquets} from './routes/bouquets';
 import config from './config';
 
 const app = express();
+
+app.use(cors());
 
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());

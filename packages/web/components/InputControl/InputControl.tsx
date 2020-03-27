@@ -5,6 +5,7 @@ import * as DATA from '../../data/flowersList.json';
 type Props = {
     type: 'DROPDOWN' | 'NUMERIC',
     inputDefaultValue?: number,
+    handleChange : (event: React.ChangeEvent) => void
 }
 
 type Flower = {
@@ -17,19 +18,32 @@ class InputControl extends React.Component<Props> {
       const { type } = this.props;
 
       const dropdownMarkup = (
-        FLOWERS_LIST.map((flower) => (<option key={flower.id.toString()} value={flower.id.toString()}>{flower.Name}</option>)));
+        FLOWERS_LIST.map((flower) => (
+          <option key={flower.id.toString()} value={flower.id.toString()}>
+            {flower.Name}
+          </option>
+        ))
+      );
 
       switch (type) {
         case 'DROPDOWN':
           return (
             <>
-              <select className="input-control_select">
+              <select
+                className="input-control_select"
+                onChange={this.props.handleChange}
+              >
                 {dropdownMarkup}
               </select>
             </>
           );
         case 'NUMERIC':
-          return (<input className="input-control_numeric" />);
+          return (
+            <input
+              className="input-control_numeric"
+              onChange={this.props.handleChange}
+            />
+          );
         default:
           break;
       }
