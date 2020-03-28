@@ -25,10 +25,10 @@ export default class DropDownControl extends React.Component<Props> {
           onChange={this.props.handleChange}
         >
           {FLOWERS_LIST && FLOWERS_LIST.map((flower) => (
-       <option key={flower} value={flower}>
-         {flower}
-       </option>
-       ))}
+          <option key={flower} value={flower}>
+            {flower}
+          </option>
+        ))}
         </select>
       </div>
     );

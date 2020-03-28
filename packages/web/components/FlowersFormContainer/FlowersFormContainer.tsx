@@ -75,7 +75,7 @@ export default class FlowersFormContainer extends React.Component<Props, State> 
   }
 
   handleFlowersType = (event) => {
-    this.setState({ FLOWERS_NAMES: event.target.value });
+    this.setState({ FLOWERS_NAMES: [event.target.value] });
   }
 
   render() {
