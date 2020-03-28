@@ -2,50 +2,21 @@ import * as React from 'react';
 import './DropDownControl.css';
 
 type Props = {
-    handleChange : (event: React.ChangeEvent) => void
+    handleChange : (event: React.ChangeEvent) => void,
+    FLOWERS_LIST: Array<string>
 }
-
-type Flower = {
-    [key: string]: number | string | boolean
-}
-
-type State = {
-  FLOWERS_LIST: Array<Flower>
-}
-
-export default class DropDownControl extends React.Component<Props, State> {
+export default class DropDownControl extends React.Component<Props> {
  
   constructor(props:Props) {
     super(props);
-    this.state = { FLOWERS_LIST: [] };
-  }
-  //TODO: пофикси повторный запрос хуками или еще как-нибудь, а то периодически все равно в консоль падает 304
-  componentDidMount(){
-    fetch('http://localhost:8080/api/v1/flowers/', {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(response.statusText);
-        }
-        return response.json();
-      })
-      .then((FLOWERS_LIST) => { this.setState({ FLOWERS_LIST }); });
   }
 
   render() {
-    const { FLOWERS_LIST } = this.state;
+    const { FLOWERS_LIST } = this.props;
 
-    const dropdownMarkup = (
-      FLOWERS_LIST && FLOWERS_LIST.map((flower) => (
-        <option key={flower.id.toString()} value={flower.id.toString()}>
-          {flower.name}
-        </option>
-      )));
+    if(!FLOWERS_LIST){
+      return (<div>fdsfs </div>)
+    }
 
     return (
       <div className="dropdown-control">
@@ -53,7 +24,11 @@ export default class DropDownControl extends React.Component<Props, State> {
           className="dropdown-control_select"
           onChange={this.props.handleChange}
         >
-          {dropdownMarkup}
+          {FLOWERS_LIST && FLOWERS_LIST.map((flower) => (
+       <option key={flower} value={flower}>
+         {flower}
+       </option>
+       ))}
         </select>
       </div>
     );
