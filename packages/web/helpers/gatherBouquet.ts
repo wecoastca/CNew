@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 
-const getFlowersModel = () => {
-  console.log('NotImplemented');
+const gatherBouquet = (flowNum, url) => {
+  console.log(flowNum, url);
+  // if store model on any cloud use google drive api for example
 };
-export const gatherBouquet = () => {
 
-};
+export default gatherBouquet;

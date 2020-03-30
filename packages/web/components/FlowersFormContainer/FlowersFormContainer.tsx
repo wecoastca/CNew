@@ -3,6 +3,7 @@ import './FlowersFormContainer.css';
 import DropDownControl from '../DropDownControl/DropDownControl';
 import InputControl from '../InputControl/InputControl';
 import GenerateButton from '../GenerateButton/GenerateButton';
+import gatherBouquet from '../../helpers/gatherBouquet';
 
 type Props = {}
 
@@ -14,11 +15,11 @@ export default class FlowersFormContainer extends React.Component<Props, State> 
 
     this.state = {
       numberOfFlowers: 0,
-      FLOWERS_NAMES: []
+      FLOWERS_NAMES: [],
     };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     fetch('http://localhost:8080/api/v1/flowers/', {
       method: 'GET',
       headers: {
@@ -32,22 +33,21 @@ export default class FlowersFormContainer extends React.Component<Props, State> 
         }
         return response.json();
       })
-      .then((FLOWERS_LIST) => { 
-        let names = [];
+      .then((FLOWERS_LIST) => {
+        const names = [];
 
         FLOWERS_LIST && FLOWERS_LIST.map((flower) => {
-          names.push(flower.name)
-        })
-        
-        this.setState({FLOWERS_NAMES: names});
-      })
+          names.push(flower.name);
+        });
+
+        this.setState({ FLOWERS_NAMES: names });
+      });
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
 
-    const {FLOWERS_NAMES} = this.state;
-    // это не работает если че
+    const { FLOWERS_NAMES } = this.state;
     fetch('http://localhost:8080/api/v1/flowers/name', {
       method: 'POST',
       body: JSON.stringify(FLOWERS_NAMES),
@@ -57,7 +57,7 @@ export default class FlowersFormContainer extends React.Component<Props, State> 
       },
     }).then((response) => {
       response.json().then((data) => {
-        console.log(data);
+        gatherBouquet(this.state.numberOfFlowers, data.flower.source);
       });
     });
   }

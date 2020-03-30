@@ -6,17 +6,12 @@ type Props = {
     FLOWERS_LIST: Array<string>
 }
 export default class DropDownControl extends React.Component<Props> {
- 
   constructor(props:Props) {
     super(props);
   }
 
   render() {
     const { FLOWERS_LIST } = this.props;
-
-    if(!FLOWERS_LIST){
-      return (<div>fdsfs </div>)
-    }
 
     return (
       <div className="dropdown-control">
@@ -25,10 +20,10 @@ export default class DropDownControl extends React.Component<Props> {
           onChange={this.props.handleChange}
         >
           {FLOWERS_LIST && FLOWERS_LIST.map((flower) => (
-          <option key={flower} value={flower}>
-            {flower}
-          </option>
-        ))}
+            <option key={flower} value={flower}>
+              {flower}
+            </option>
+          ))}
         </select>
       </div>
     );
