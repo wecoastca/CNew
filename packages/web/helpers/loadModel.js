@@ -57,7 +57,7 @@ export const loadModel = () => {
     (error) => { console.log('An error happened'); },
   );
   const objLoader = new OBJLoader2();
-
+  // возможно можно создать var и туда положить e обьект, чтобы потом заэкспортить, но не уверен, что будет работать вне колбжэка
   objLoader.load('public/models/example1/boq1_100k.obj',
     (e) => {
       e.traverse((child) => {
@@ -75,4 +75,6 @@ export const loadModel = () => {
     renderer.render(scene, camera);
   }
   animate();
+
+  return scene;
 };

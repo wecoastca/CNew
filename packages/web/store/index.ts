@@ -1,8 +1,7 @@
 import { createStore, combineReducers } from 'redux';
+import formReducer from '../reducers/formReducer';
 
-import scene from '../reducers/scene';
-
-const rootReducer = combineReducers({ scene });
+const rootReducer = combineReducers({ formReducer });
 
 const store = createStore(
   rootReducer,

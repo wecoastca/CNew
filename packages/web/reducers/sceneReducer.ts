@@ -1,6 +1,6 @@
 import { Reducer } from 'redux';
 
-const scene: Reducer = (state = {}, action) => {
+const sceneReducer: Reducer = (state = {}, action) => {
   switch (action.type) {
     case 'SCENE/SUBMIT':
       const scene = { ...state, ...action.value };
@@ -11,4 +11,4 @@ const scene: Reducer = (state = {}, action) => {
   }
 };
 
-export default scene;
+export default sceneReducer;

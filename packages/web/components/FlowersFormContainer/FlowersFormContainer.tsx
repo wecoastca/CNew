@@ -1,20 +1,29 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
+
 import './FlowersFormContainer.css';
 import DropDownControl from '../DropDownControl/DropDownControl';
 import InputControl from '../InputControl/InputControl';
 import GenerateButton from '../GenerateButton/GenerateButton';
 import gatherBouquet from '../../helpers/gatherBouquet';
 
+import { FormState } from '../../reducers/formReducer';
+
 type Props = {}
+type State = {FLOWERS_NAMES: Array<string>}
 
-type State = {numberOfFlowers: number, FLOWERS_NAMES: Array<string>}
+type StoreProps = FormState;
+type StoreDispatch = {
+  onFormSubmit?: (form: FormState) => void;
+}
+// type State = {numberOfFlowers: number, FLOWERS_NAMES: Array<string>}
 
-export default class FlowersFormContainer extends React.Component<Props, State> {
+class FlowersFormContainer extends React.Component<Props & StoreProps & StoreDispatch, State> {
   constructor(props:Props) {
     super(props);
 
     this.state = {
-      numberOfFlowers: 0,
+      //   numberOfFlowers: 0,
       FLOWERS_NAMES: [],
     };
   }
@@ -39,14 +48,13 @@ export default class FlowersFormContainer extends React.Component<Props, State> 
         FLOWERS_LIST && FLOWERS_LIST.map((flower) => {
           names.push(flower.name);
         });
-
         this.setState({ FLOWERS_NAMES: names });
       });
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
-
+    const { onFormSubmit } = this.props;
     const { FLOWERS_NAMES } = this.state;
     fetch('http://localhost:8080/api/v1/flowers/name', {
       method: 'POST',
@@ -57,21 +65,26 @@ export default class FlowersFormContainer extends React.Component<Props, State> 
       },
     }).then((response) => {
       response.json().then((data) => {
-        gatherBouquet(this.state.numberOfFlowers, data.flower.source);
+        console.log(data);
+        onFormSubmit({ source: data.flower.source, isSubmited: true });
+        // gatherBouquet(this.state.numberOfFlowers, data.flower.source);
       });
     });
   }
 
   handleReset = (event) => {
+    const { onFormSubmit } = this.props;
     event.preventDefault();
+    onFormSubmit({ flowNum: 0, isSubmited: false });
     this.setState({
-      numberOfFlowers: 0,
+      // numberOfFlowers: 0,
       FLOWERS_NAMES: [],
     });
   }
 
   handleFlowersNumber = (event) => {
-    this.setState({ numberOfFlowers: event.target.value });
+    const { onFormSubmit } = this.props;
+    onFormSubmit({ flowNum: event.target.value });
   }
 
   handleFlowersType = (event) => {
@@ -125,3 +138,15 @@ export default class FlowersFormContainer extends React.Component<Props, State> 
     );
   }
 }
+
+const mapStateToProps = (state):StoreProps => ({
+  flowNum: state.flowNum,
+  source: state.source,
+  isSubmited: state.isSubmited,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onFormSubmit: (form) => dispatch({ type: 'FORM/SUBMITED', value: form }),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(FlowersFormContainer);
