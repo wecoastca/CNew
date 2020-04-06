@@ -4,8 +4,7 @@ import './Scene.css';
 
 import * as THREE from 'three';
 import { connect } from 'react-redux';
-import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader';
-import { OBJLoader2 } from 'three/examples/jsm/loaders/OBJLoader2';
+import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
 import { loadModel } from '../../helpers/loadModel.js';
 import { FormState } from '../../reducers/formReducer';
 
@@ -45,33 +44,20 @@ class Scene extends React.Component <Props & StoreProps, State> {
       renderer.render(scene, camera);
     };
 
-    // load model from static folder
-    const mtlLoader = new MTLLoader();
-    mtlLoader.load(
-      'public/models/rose/rose.mtl',
-      (materials) => {
-        materials.preload();
+    const fbxLoader = new FBXLoader();
 
-        const objLoader = new OBJLoader2();
-
-        objLoader.addMaterials(materials, false);
-        objLoader.load(
-          'public/models/rose/rose.obj',
-          (e) => {
-            scene.add(e);
-          },
-          (xhr) => { console.log(`${xhr.loaded / xhr.total * 100}% loaded Obj model`); },
-          (error) => { console.log('An error happened'); },
-        );
-      },
-      (xhr) => { console.log(`${xhr.loaded / xhr.total * 100}% loaded materials`); },
-      (error) => { console.log('An error happened'); },
-    );
-
-    // fetch model from any resource
-
-    console.log(flowNum, url, scene);
     const previousModel = scene.getObjectByName('initModel');
+    const vector = new THREE.Vector3();
+    const prevModelPosition = previousModel.getWorldPosition(vector);
+
+    for (let i = 0; i < flowNum; i++) {
+      fbxLoader.load(url,
+        (e) => {
+          const newModelPosition = prevModelPosition.setX(prevModelPosition.x + 10 + i);
+          e.position.add(newModelPosition);
+          scene.add(e);
+        });
+    }
     scene.remove(previousModel);
 
     animate();
