@@ -2,50 +2,69 @@ import * as THREE from 'three';
 import { OBJLoader2 } from 'three/examples/jsm/loaders/OBJLoader2';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
+window.THREE = THREE;
 
 export const loadModel = () => {
+  //scene
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color('whitesmoke');
+  window.scene = scene;
   const container = document.getElementById('canvas-id');
 
-  const camera = new THREE.PerspectiveCamera(320, container.clientWidth / container.clientHeight, 1, 1000);
+  //cameras
+  const camera = new THREE.PerspectiveCamera(36,container.clientWidth / container.clientHeight,0.25,16);
+  camera.position.set(0, 1.3, 3 );
 
-  camera.position.z = 150;
-
-  const light = new THREE.AmbientLight(0x404040);
+  //lights
+  const light = new THREE.AmbientLight(0x505050);
   scene.add(light);
 
-  const textureLoader = new THREE.TextureLoader();
-  const texture = textureLoader.load('public/images/uv_grid_opengl.jpg');
+  const spotLight = new THREE.SpotLight( 0xffffff );
+  spotLight.angle = Math.PI / 5;
+  spotLight.penumbra = 0.2;
+  spotLight.position.set( 2, 3, 3 );
+  spotLight.castShadow = true;
+  spotLight.shadow.camera.near = 3;
+  spotLight.shadow.camera.far = 10;
+  spotLight.shadow.mapSize.width = 1024;
+  spotLight.shadow.mapSize.height = 1024;
 
-  const planeSize = 100;
+  scene.add( spotLight );
 
-  texture.wrapS = THREE.RepeatWrapping;
-  texture.wrapT = THREE.RepeatWrapping;
-  texture.magFilter = THREE.NearestFilter;
-  const repeats = planeSize / 100;
-  texture.repeat.set(repeats, repeats);
+  var dirLight = new THREE.DirectionalLight( 0x55505a, 1 );
+  dirLight.position.set( 0, 3, 0 );
+  dirLight.castShadow = true;
+  dirLight.shadow.camera.near = 1;
+  dirLight.shadow.camera.far = 10;
 
-  const planeGeo = new THREE.PlaneBufferGeometry(planeSize, planeSize);// Создание 3d модели в виде площадки для размещения модели с заданием ширины и высоты
-  const planeMat = new THREE.MeshPhongMaterial({ // придаем площадке отблескивания при прокрутке и задаем дефолтные параметры для настройки материалов
-    map: texture,
-    side: THREE.DoubleSide,
-  });
-  const mesh = new THREE.Mesh(planeGeo, planeMat); // Сбор всех параметров геометрии и материалов для соединения в одну модель
-  mesh.rotation.x = Math.PI / 4;
-  scene.add(mesh); // Добавление на сцену модели площадки
+  dirLight.shadow.camera.right = 1;
+  dirLight.shadow.camera.left = - 1;
+  dirLight.shadow.camera.top	= 1;
+  dirLight.shadow.camera.bottom = - 1;
 
-  const skyColor = 0xB1E1FF;
-  const groundColor = 0xB97A20;
-  const intensity = 1;
-  const Hlight = new THREE.HemisphereLight(skyColor, groundColor, intensity);// источник света, базирующийся за сценой с обработкой теней (сверху солнце снизу земля)
-  scene.add(Hlight);
+  dirLight.shadow.mapSize.width = 1024;
+  dirLight.shadow.mapSize.height = 1024;
 
+  scene.add( dirLight );
+    
+  //ground
+  var mesh = new THREE.Mesh(
+    new THREE.PlaneBufferGeometry( 9, 9, 1, 1 ),
+    new THREE.MeshPhongMaterial( { color: 0xa0adaf, shininess: 150 } )
+  );
+
+  mesh.rotation.x = - Math.PI / 2; // rotates X/Y to X/Z
+  mesh.receiveShadow = true;
+  scene.add( mesh );
+  console.log(mesh);
+
+  //renderer
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize(container.clientWidth, container.clientHeight);
+  renderer.shadowMap.enabled = true;
 
   container.appendChild(renderer.domElement);
-
+  
+  //load texture for model
   const objTextureLoader = new THREE.TextureLoader();
 
   const objTexture = objTextureLoader.load(
@@ -56,10 +75,19 @@ export const loadModel = () => {
     undefined,
     (error) => { console.log('An error happened'); },
   );
+
+  //load model
   const objLoader = new OBJLoader2();
   objLoader.load('public/models/example1/boq1_100k.obj',
     (e) => {
       e.name = 'initModel';
+      e.position.set(-0.74,-2.18,0);
+      e.rotation.set(-1.5,0.16,0);
+      e.castShadow = true;
+      e.scale.setScalar(0.1);
+
+      camera.lookAt(e.position);
+
       e.traverse((child) => {
         if (child instanceof THREE.Mesh) { child.material.map = objTexture; }
       });
@@ -67,9 +95,12 @@ export const loadModel = () => {
     },
     (xhr) => { console.log(`${xhr.loaded / xhr.total * 100}% loaded Obj model`); },
     (error) => { console.log('An error happened'); });
+  //controls
 
-  new OrbitControls(camera, renderer.domElement);
-
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.target.set(0,1,0);
+  controls.update();
+  
   const globalObject = {
     scene,
     renderer,
