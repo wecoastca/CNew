@@ -55,7 +55,6 @@ export const loadModel = () => {
   mesh.rotation.x = - Math.PI / 2; // rotates X/Y to X/Z
   mesh.receiveShadow = true;
   scene.add( mesh );
-  console.log(mesh);
 
   //renderer
   const renderer = new THREE.WebGLRenderer();
@@ -100,7 +99,7 @@ export const loadModel = () => {
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.target.set(0,1,0);
   controls.update();
-  
+
   const globalObject = {
     scene,
     renderer,

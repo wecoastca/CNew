@@ -52,7 +52,6 @@ router.post('/', (req:express.Request, res:express.Response) => {
 
 router.post('/name', (req:express.Request, res: express.Response)=>{
     Flower.findOne({name:req.body},(err,doc)=>{
-
         if(!doc){
             res.statusCode = 404;
             logger.error('%d: flower was not found in mongo', res.statusCode);
