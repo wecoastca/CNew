@@ -55,6 +55,13 @@ class Scene extends React.Component <Props & StoreProps, State> {
       scene.add(circle);
     };
 
+    const createHelperAxis = (targetVector) => {
+      const frameGeometry = new THREE.Geometry();
+      frameGeometry.vertices.push(new THREE.Vector3(0, 1.5, 0), targetVector);
+      const frame = new THREE.Line(frameGeometry, new THREE.LineBasicMaterial({ color: 'rgb(0,255,0)', linewidth: 2 }));
+      scene.add(frame);
+    };
+
     const estimateBaseTrajectory = (numberOfFlowers:Number, source: string) => {
       const circleModel = scene.getObjectByName('circle');
       const circleModelPosition = circleModel.position;
@@ -64,19 +71,49 @@ class Scene extends React.Component <Props & StoreProps, State> {
         z: (spiralStep / 2 * Math.PI) * angle * Math.sin(angle),
       });
 
-      const calculateRotation = () => {
-
-      };
-
       for (let i = 0; i < numberOfFlowers; i++) {
-        const xCoordinate = calculateCoordinates(0.05, i * Math.PI / 8).x;
-        const zCoordinate = calculateCoordinates(0.05, i * Math.PI / 8).z;
+        let spiralStep = 0;
+
+        switch (true) {
+          case numberOfFlowers < 5:
+            spiralStep = 0.05;
+            break;
+            // @ts-ignore
+          case numberOfFlowers in [5, 6, 7]:
+            spiralStep = 0.2;
+            break;
+            // @ts-ignore
+          case numberOfFlowers in [8, 9, 10]:
+            spiralStep = 0.35;
+            break;
+            // @ts-ignore
+          case numberOfFlowers in [11, 12, 13, 14, 15]:
+            spiralStep = 0.5;
+            break;
+            // @ts-ignore
+          case numberOfFlowers > 15:
+            spiralStep = 0.6;
+            break;
+            // @ts-ignore
+          default:
+            spiralStep = 0.2;
+            break;
+        }
+
+        const xCoordinate = calculateCoordinates(spiralStep, i * Math.PI / 8).x;
+        const zCoordinate = calculateCoordinates(spiralStep, i * Math.PI / 8).z;
 
         fbxLoader.load(source,
           (e) => {
-            e.rotation.set(0, 0, 0);
             e.position.set(circleModelPosition.x + xCoordinate, circleModelPosition.y, circleModelPosition.z + zCoordinate);
-            e.scale.set(0.03, 0.03, 0.03);
+            e.scale.set(0.02, 0.02, 0.02);
+
+            const rotationVector = new THREE.Vector3(e.position.x, 1.5, e.position.z);
+            createHelperAxis(rotationVector);
+            const rotationAngle = Math.atan(Math.tan(0.8 / rotationVector.length()));
+
+            rotationMatrix.lookAt(e.position, new THREE.Vector3(-e.position.x, 3.15, -e.position.z), e.up);
+            targetQuaternion.setFromRotationMatrix(rotationMatrix);
 
             scene.add(e);
           });
@@ -84,6 +121,9 @@ class Scene extends React.Component <Props & StoreProps, State> {
     };
 
     const fbxLoader = new FBXLoader();
+
+    var rotationMatrix = new THREE.Matrix4();
+    var targetQuaternion = new THREE.Quaternion();
 
     makeCircleModel(flowNum);
     estimateBaseTrajectory(flowNum, url);

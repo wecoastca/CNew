@@ -5,65 +5,65 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 window.THREE = THREE;
 
 export const loadModel = () => {
-  //scene
+  // scene
   const scene = new THREE.Scene();
   window.scene = scene;
   const container = document.getElementById('canvas-id');
 
-  //cameras
-  const camera = new THREE.PerspectiveCamera(36,container.clientWidth / container.clientHeight,0.25,16);
-  camera.position.set(0, 1.3, 3 );
+  // cameras
+  const camera = new THREE.PerspectiveCamera(36, container.clientWidth / container.clientHeight, 0.25, 16);
+  camera.position.set(0, 1.3, 3);
 
-  //lights
+  // lights
   const light = new THREE.AmbientLight(0x505050);
   scene.add(light);
 
-  const spotLight = new THREE.SpotLight( 0xffffff );
+  const spotLight = new THREE.SpotLight(0xffffff);
   spotLight.angle = Math.PI / 5;
   spotLight.penumbra = 0.2;
-  spotLight.position.set( 2, 3, 3 );
+  spotLight.position.set(2, 3, 3);
   spotLight.castShadow = true;
   spotLight.shadow.camera.near = 3;
   spotLight.shadow.camera.far = 10;
   spotLight.shadow.mapSize.width = 1024;
   spotLight.shadow.mapSize.height = 1024;
 
-  scene.add( spotLight );
+  scene.add(spotLight);
 
-  var dirLight = new THREE.DirectionalLight( 0x55505a, 1 );
-  dirLight.position.set( 0, 3, 0 );
+  const dirLight = new THREE.DirectionalLight(0x55505a, 1);
+  dirLight.position.set(0, 3, 0);
   dirLight.castShadow = true;
   dirLight.shadow.camera.near = 1;
   dirLight.shadow.camera.far = 10;
 
   dirLight.shadow.camera.right = 1;
-  dirLight.shadow.camera.left = - 1;
+  dirLight.shadow.camera.left = -1;
   dirLight.shadow.camera.top	= 1;
-  dirLight.shadow.camera.bottom = - 1;
+  dirLight.shadow.camera.bottom = -1;
 
   dirLight.shadow.mapSize.width = 1024;
   dirLight.shadow.mapSize.height = 1024;
 
-  scene.add( dirLight );
-    
-  //ground
-  var mesh = new THREE.Mesh(
-    new THREE.PlaneBufferGeometry( 9, 9, 1, 1 ),
-    new THREE.MeshPhongMaterial( { color: 0xa0adaf, shininess: 150 } )
+  scene.add(dirLight);
+
+  // ground
+  const mesh = new THREE.Mesh(
+    new THREE.PlaneBufferGeometry(9, 9, 1, 1),
+    new THREE.MeshPhongMaterial({ color: 0xa0adaf, shininess: 150 }),
   );
 
-  mesh.rotation.x = - Math.PI / 2; // rotates X/Y to X/Z
+  mesh.rotation.x = -Math.PI / 2; // rotates X/Y to X/Z
   mesh.receiveShadow = true;
-  scene.add( mesh );
+  scene.add(mesh);
 
-  //renderer
+  // renderer
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize(container.clientWidth, container.clientHeight);
   renderer.shadowMap.enabled = true;
 
   container.appendChild(renderer.domElement);
-  
-  //load texture for model
+
+  // load texture for model
   const objTextureLoader = new THREE.TextureLoader();
 
   const objTexture = objTextureLoader.load(
@@ -75,13 +75,13 @@ export const loadModel = () => {
     (error) => { console.log('An error happened'); },
   );
 
-  //load model
+  // load model
   const objLoader = new OBJLoader2();
   objLoader.load('public/models/example1/boq1_100k.obj',
     (e) => {
       e.name = 'initModel';
-      e.position.set(-0.74,-2.18,0);
-      e.rotation.set(-1.5,0.16,0);
+      e.position.set(-0.74, -2.18, 0);
+      e.rotation.set(-1.5, 0.16, 0);
       e.castShadow = true;
       e.scale.setScalar(0.1);
 
@@ -94,11 +94,31 @@ export const loadModel = () => {
     },
     (xhr) => { console.log(`${xhr.loaded / xhr.total * 100}% loaded Obj model`); },
     (error) => { console.log('An error happened'); });
-  //controls
+  // controls
 
   const controls = new OrbitControls(camera, renderer.domElement);
-  controls.target.set(0,1,0);
+  controls.target.set(0, 1, 0);
   controls.update();
+
+  // add visual axes
+  function loadVisualElementHelper(scene) {
+    // ************************** //
+    // Create (x,y,z) frame centered in (0,0,0)
+    // ************************** //
+    const xFrameGeometry = new THREE.Geometry(); xFrameGeometry.vertices.push(new THREE.Vector3(0, 1.5, 0), new THREE.Vector3(1, 1.5, 0));
+    const yFrameGeometry = new THREE.Geometry(); yFrameGeometry.vertices.push(new THREE.Vector3(0, 1.5, 0), new THREE.Vector3(0, 1.5, 0));
+    const zFrameGeometry = new THREE.Geometry(); zFrameGeometry.vertices.push(new THREE.Vector3(0, 1.5, 0), new THREE.Vector3(0, 1.5, 1));
+    const xFrame = new THREE.Line(xFrameGeometry, new THREE.LineBasicMaterial({ color: 'rgb(255,0,0)', linewidth: 2 }));
+    const yFrame = new THREE.Line(yFrameGeometry, new THREE.LineBasicMaterial({ color: 'rgb(0,255,0)', linewidth: 2 }));
+    const zFrame = new THREE.Line(zFrameGeometry, new THREE.LineBasicMaterial({ color: 'rgb(0,0,255)', linewidth: 2 }));
+    scene.add(xFrame);
+    scene.add(yFrame);
+    scene.add(zFrame);
+    xFrame.castShadow = true;
+    yFrame.castShadow = true;
+    zFrame.castShadow = true;
+  }
+  loadVisualElementHelper(scene);
 
   const globalObject = {
     scene,
