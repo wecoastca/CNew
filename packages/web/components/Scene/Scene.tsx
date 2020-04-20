@@ -1,4 +1,6 @@
 import * as React from 'react';
+import AxisGridHelper from '../../helpers/axisGridHelper';
+import { GUI } from 'dat.gui';
 
 import './Scene.css';
 
@@ -71,12 +73,17 @@ class Scene extends React.Component <Props & StoreProps, State> {
         z: (spiralStep / 2 * Math.PI) * angle * Math.sin(angle),
       });
 
+      const makeAxisGrid = (node, label, units?) => {
+        const helper = new AxisGridHelper(node, units);
+        gui.add(helper, 'visible').name(label);
+      };
+
       for (let i = 0; i < numberOfFlowers; i++) {
         let spiralStep = 0;
 
         switch (true) {
           case numberOfFlowers < 5:
-            spiralStep = 0.05;
+            spiralStep = 0.1;
             break;
             // @ts-ignore
           case numberOfFlowers in [5, 6, 7]:
@@ -105,16 +112,26 @@ class Scene extends React.Component <Props & StoreProps, State> {
 
         fbxLoader.load(source,
           (e) => {
-            e.position.set(circleModelPosition.x + xCoordinate, circleModelPosition.y, circleModelPosition.z + zCoordinate);
+            // e.position.set(circleModelPosition.x + xCoordinate, circleModelPosition.y, circleModelPosition.z + zCoordinate);
+            e.position.set(0, 1.5, 0);
             e.scale.set(0.02, 0.02, 0.02);
 
-            const rotationVector = new THREE.Vector3(e.position.x, 1.5, e.position.z);
-            createHelperAxis(rotationVector);
-            const rotationAngle = Math.atan(Math.tan(0.8 / rotationVector.length()));
+            // const vectorToModel = new THREE.Vector3(e.position.x, 0, e.position.z);
+            // console.log(vectorToModel);
+            // const rotationVector = vectorToModel.clone();
+            // createHelperAxis(rotationVector);
 
-            rotationMatrix.lookAt(e.position, new THREE.Vector3(-e.position.x, 3.15, -e.position.z), e.up);
-            targetQuaternion.setFromRotationMatrix(rotationMatrix);
+            // let angle = Math.PI/2;
+            // let axis = new THREE.Vector3(0,e.position.y,0);
+            // rotationVector.applyAxisAngle(axis, angle);
+            // //createHelperAxis(rotationVector);
 
+            // const rotationWorldVector = e.localToWorld(rotationVector);
+            // //makeAxisGrid(rotationWorldVector,'rotaionWorldVector');
+            // makeAxisGrid(e,'flowerModel');
+
+            // const rotationAngle = Math.atan(Math.tan(0.8 / rotationVector.length()));
+            // e.rotateOnAxis(rotationVector, rotationAngle);
             scene.add(e);
           });
       }
@@ -122,8 +139,7 @@ class Scene extends React.Component <Props & StoreProps, State> {
 
     const fbxLoader = new FBXLoader();
 
-    var rotationMatrix = new THREE.Matrix4();
-    var targetQuaternion = new THREE.Quaternion();
+    const gui = new GUI();
 
     makeCircleModel(flowNum);
     estimateBaseTrajectory(flowNum, url);
