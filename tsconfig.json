@@ -2,7 +2,10 @@
     "compilerOptions": {
       "target": "es5",
       "sourceMap": false,
-      "lib": [],
+      "lib": [
+        "es2018",
+        "dom"
+      ],
       "noImplicitAny": true,
       "esModuleInterop": true,
       "experimentalDecorators": true

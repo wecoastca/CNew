@@ -63,37 +63,8 @@ export const loadModel = () => {
 
   container.appendChild(renderer.domElement);
 
-  // load texture for model
-  const objTextureLoader = new THREE.TextureLoader();
+  camera.lookAt(0,1.5,0);
 
-  const objTexture = objTextureLoader.load(
-    'public/models/example1/boq1_100k01.jpg',
-    (texture) => {
-      new THREE.MeshBasicMaterial({ map: texture });
-    },
-    undefined,
-    (error) => { console.log('An error happened'); },
-  );
-
-  // load model
-  const objLoader = new OBJLoader2();
-  objLoader.load('public/models/example1/boq1_100k.obj',
-    (e) => {
-      e.name = 'initModel';
-      e.position.set(-0.74, -2.18, 0);
-      e.rotation.set(-1.5, 0.16, 0);
-      e.castShadow = true;
-      e.scale.setScalar(0.1);
-
-      camera.lookAt(e.position);
-
-      e.traverse((child) => {
-        if (child instanceof THREE.Mesh) { child.material.map = objTexture; }
-      });
-      scene.add(e);
-    },
-    (xhr) => { console.log(`${xhr.loaded / xhr.total * 100}% loaded Obj model`); },
-    (error) => { console.log('An error happened'); });
   // controls
 
   const controls = new OrbitControls(camera, renderer.domElement);

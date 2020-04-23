@@ -13,7 +13,8 @@ import { FormState } from '../../reducers/formReducer';
 type State = {
   scene: THREE.Scene,
   renderer: THREE.WebGLRenderer,
-  camera: THREE.PerspectiveCamera
+  camera: THREE.PerspectiveCamera,
+  prevModelsId: [string?]
 }
 type StoreProps = FormState;
 type Props = {}
@@ -25,6 +26,7 @@ class Scene extends React.Component <Props & StoreProps, State> {
       scene: new THREE.Scene(),
       renderer: new THREE.WebGLRenderer(),
       camera: new THREE.PerspectiveCamera(),
+      prevModelsId: []
     };
   }
 
@@ -39,7 +41,7 @@ class Scene extends React.Component <Props & StoreProps, State> {
   }
 
   gatherBouquet = (flowNum, url) => {
-    const { scene, renderer, camera } = this.state;
+    const { scene, renderer, camera, prevModelsId } = this.state;
 
     const animate = () => {
       requestAnimationFrame(animate);
@@ -64,7 +66,16 @@ class Scene extends React.Component <Props & StoreProps, State> {
       scene.add(frame);
     };
 
-    const estimateBaseTrajectory = (numberOfFlowers:Number, source: string) => {
+    const removePreviousModels = (numberOfFlowers) => {
+      prevModelsId.map((i)=> {
+        const object = scene.getObjectByProperty('uuid', i);
+        scene.remove(object);
+      });
+
+      this.setState({prevModelsId: []});
+    }
+
+    const modelingBouquet = (numberOfFlowers:Number, source: string) => {
       const circleModel = scene.getObjectByName('circle');
       const circleModelPosition = circleModel.position;
 
@@ -73,89 +84,112 @@ class Scene extends React.Component <Props & StoreProps, State> {
         z: (spiralStep / 2 * Math.PI) * angle * Math.sin(angle),
       });
 
+      const calculateRotation = (index) => {
+        
+        let rotations = [
+          {x:0, y:0, z:0, offset:0},
+          {x:0.2, y:0, z:0.2, offset:0.05},
+          {x:0.2, y:0, z:-0.2, offset:0.05},
+          {x:-0.2, y:0, z:0.2, offset:0.05},
+          {x:-0.2, y:0, z:-0.2, offset:0.05},
+          {x:0.2, y:0, z:0, offset:0.1},
+          {x:0, y:0, z:0.2, offset:0.1},
+          {x:-0.2, y:0, z:0, offset:0.1},
+          {x:0, y:0, z:-0.2, offset:0.1},
+          {x:0.3, y:0, z:0.3, offset:0.2},
+          {x:0.3, y:0, z:-0.3, offset:0.2},
+          {x:-0.3, y:0, z:0.3, offset:0.2},
+          {x:-0.3, y:0, z:-0.3, offset:0.2},
+          {x:0, y:0, z:0.3, offset:0.2},
+          {x:0.3, y:0, z:0, offset:0.2} ,
+          {x:0, y:0, z:-0.3, offset:0.2},
+          {x:-0.3, y:0, z:0, offset:0.2},
+          {x:0.4, y:0, z:0.4, offset:0.3},
+          {x:0.4, y:0, z:-0.4, offset:0.3},
+          {x:-0.4, y:0, z:0.4, offset:0.3},
+          {x:-0.4, y:0, z:-0.4, offset:0.3},
+          {x:-0.4, y:0, z:-0.4, offset:0.3},
+          {x:0, y:0, z:0.3, offset:0.3},
+          {x:0.4, y:0, z:0, offset:0.3} ,
+          {x:0, y:0, z:-0.4, offset:0.3},
+          {x:-0.4, y:0, z:0, offset:0.3},
+          {x:-0.4, y:0, z:0, offset:0.3},
+          {x:0.5, y:0, z:0.5, offset:0.4},
+          {x:0.5, y:0, z:-0.5, offset:0.4},
+          {x:-0.5, y:0, z:0.5, offset:0.4},
+          {x:-0.5, y:0, z:-0.5, offset:0.4},
+          {x:-0.5, y:0, z:-0.5, offset:0.4},
+          {x:0, y:0, z:0.5, offset:0.4},
+          {x:0.5, y:0, z:0, offset:0.4} ,
+          {x:0, y:0, z:-0.5, offset:0.4},
+          {x:-0.5, y:0, z:0, offset:0.4},
+          {x:-0.5, y:0, z:0, offset:0.4},
+        ];
+
+        return rotations[index];
+      }
+
       const makeAxisGrid = (node, label, units?) => {
         const helper = new AxisGridHelper(node, units);
         gui.add(helper, 'visible').name(label);
       };
 
       for (let i = 0; i < numberOfFlowers; i++) {
+        
         let spiralStep = 0;
+      switch (true) {
+        case numberOfFlowers < 5:
+          spiralStep = 0.05;
+          break;
+          // @ts-ignore
+        case numberOfFlowers in [5, 6, 7]:
+          spiralStep = 0.2;
+          break;
+          // @ts-ignore
+        case numberOfFlowers in [8, 9, 10]:
+          spiralStep = 0.35;
+          break;
+          // @ts-ignore
+        case numberOfFlowers in [11, 12, 13, 14, 15]:
+          spiralStep = 0.5;
+          break;
+          // @ts-ignore
+        case numberOfFlowers > 15:
+          spiralStep = 0.6;
+          break;
+          // @ts-ignore
+        default:
+          spiralStep = 0.2;
+          break;
+      }
 
-        switch (true) {
-          case numberOfFlowers < 5:
-            spiralStep = 0.1;
-            break;
-            // @ts-ignore
-          case numberOfFlowers in [5, 6, 7]:
-            spiralStep = 0.2;
-            break;
-            // @ts-ignore
-          case numberOfFlowers in [8, 9, 10]:
-            spiralStep = 0.35;
-            break;
-            // @ts-ignore
-          case numberOfFlowers in [11, 12, 13, 14, 15]:
-            spiralStep = 0.5;
-            break;
-            // @ts-ignore
-          case numberOfFlowers > 15:
-            spiralStep = 0.6;
-            break;
-            // @ts-ignore
-          default:
-            spiralStep = 0.2;
-            break;
-        }
+      const xCoordinate = calculateCoordinates(spiralStep, i * Math.PI / 8).x;
+      const zCoordinate = calculateCoordinates(spiralStep, i * Math.PI / 8).z;
 
-        const xCoordinate = calculateCoordinates(spiralStep, i * Math.PI / 8).x;
-        const zCoordinate = calculateCoordinates(spiralStep, i * Math.PI / 8).z;
-
+        // let modelRotation = calculateRotation(i);
         fbxLoader.load(source,
           (e) => {
-            // e.position.set(circleModelPosition.x + xCoordinate, circleModelPosition.y, circleModelPosition.z + zCoordinate);
-            e.position.set(0, 1.5, 0);
+            e.name = `${i}`;
+            prevModelsId.push(e.uuid);
+            // e.position.set(0, 1.5, 0);
+            e.position.set(circleModelPosition.x + xCoordinate, circleModelPosition.y, circleModelPosition.z + zCoordinate);
             e.scale.set(0.02, 0.02, 0.02);
 
-            // const vectorToModel = new THREE.Vector3(e.position.x, 0, e.position.z);
-            // console.log(vectorToModel);
-            // const rotationVector = vectorToModel.clone();
-            // createHelperAxis(rotationVector);
-
-            // let angle = Math.PI/2;
-            // let axis = new THREE.Vector3(0,e.position.y,0);
-            // rotationVector.applyAxisAngle(axis, angle);
-            // //createHelperAxis(rotationVector);
-
-            // const rotationWorldVector = e.localToWorld(rotationVector);
-            // //makeAxisGrid(rotationWorldVector,'rotaionWorldVector');
-            // makeAxisGrid(e,'flowerModel');
-
-            // const rotationAngle = Math.atan(Math.tan(0.8 / rotationVector.length()));
-            // e.rotateOnAxis(rotationVector, rotationAngle);
             scene.add(e);
           });
       }
+
+      this.setState({prevModelsId: prevModelsId});
     };
 
     const fbxLoader = new FBXLoader();
-
     const gui = new GUI();
 
+    removePreviousModels(flowNum);
     makeCircleModel(flowNum);
-    estimateBaseTrajectory(flowNum, url);
-
-    const previousModel = scene.getObjectByName('initModel');
-    scene.remove(previousModel);
+    modelingBouquet(flowNum, url);
 
     animate();
-
-    // fbxLoader.load('public/models/5roses/5_roses.fbx',
-    //   (e) => {
-    //     e.rotation.set(0,0,0);
-    //     e.position.set(0,0.5,0);
-    //     e.scale.set(0.00001, 0.00001, 0.00001);
-    //     scene.add(e);
-    //   });
   }
 
   stateListenToGatherBouquet = () => {
