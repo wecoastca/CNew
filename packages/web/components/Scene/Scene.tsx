@@ -67,12 +67,17 @@ class Scene extends React.Component <Props & StoreProps, State> {
     };
 
     const removePreviousModels = (numberOfFlowers) => {
-      prevModelsId.map((i)=> {
-        const object = scene.getObjectByProperty('uuid', i);
-        scene.remove(object);
-      });
-
-      this.setState({prevModelsId: []});
+      if( numberOfFlowers == 0) {
+        return null;
+      }
+      else{
+        prevModelsId.map((i)=> {
+          const object = scene.getObjectByProperty('uuid', i);
+          scene.remove(object);
+        });
+  
+        this.setState({prevModelsId: []});
+      }
     }
 
     const modelingBouquet = (numberOfFlowers:Number, source: string) => {
@@ -83,51 +88,6 @@ class Scene extends React.Component <Props & StoreProps, State> {
         x: (spiralStep / 2 * Math.PI) * angle * Math.cos(angle),
         z: (spiralStep / 2 * Math.PI) * angle * Math.sin(angle),
       });
-
-      const calculateRotation = (index) => {
-        
-        let rotations = [
-          {x:0, y:0, z:0, offset:0},
-          {x:0.2, y:0, z:0.2, offset:0.05},
-          {x:0.2, y:0, z:-0.2, offset:0.05},
-          {x:-0.2, y:0, z:0.2, offset:0.05},
-          {x:-0.2, y:0, z:-0.2, offset:0.05},
-          {x:0.2, y:0, z:0, offset:0.1},
-          {x:0, y:0, z:0.2, offset:0.1},
-          {x:-0.2, y:0, z:0, offset:0.1},
-          {x:0, y:0, z:-0.2, offset:0.1},
-          {x:0.3, y:0, z:0.3, offset:0.2},
-          {x:0.3, y:0, z:-0.3, offset:0.2},
-          {x:-0.3, y:0, z:0.3, offset:0.2},
-          {x:-0.3, y:0, z:-0.3, offset:0.2},
-          {x:0, y:0, z:0.3, offset:0.2},
-          {x:0.3, y:0, z:0, offset:0.2} ,
-          {x:0, y:0, z:-0.3, offset:0.2},
-          {x:-0.3, y:0, z:0, offset:0.2},
-          {x:0.4, y:0, z:0.4, offset:0.3},
-          {x:0.4, y:0, z:-0.4, offset:0.3},
-          {x:-0.4, y:0, z:0.4, offset:0.3},
-          {x:-0.4, y:0, z:-0.4, offset:0.3},
-          {x:-0.4, y:0, z:-0.4, offset:0.3},
-          {x:0, y:0, z:0.3, offset:0.3},
-          {x:0.4, y:0, z:0, offset:0.3} ,
-          {x:0, y:0, z:-0.4, offset:0.3},
-          {x:-0.4, y:0, z:0, offset:0.3},
-          {x:-0.4, y:0, z:0, offset:0.3},
-          {x:0.5, y:0, z:0.5, offset:0.4},
-          {x:0.5, y:0, z:-0.5, offset:0.4},
-          {x:-0.5, y:0, z:0.5, offset:0.4},
-          {x:-0.5, y:0, z:-0.5, offset:0.4},
-          {x:-0.5, y:0, z:-0.5, offset:0.4},
-          {x:0, y:0, z:0.5, offset:0.4},
-          {x:0.5, y:0, z:0, offset:0.4} ,
-          {x:0, y:0, z:-0.5, offset:0.4},
-          {x:-0.5, y:0, z:0, offset:0.4},
-          {x:-0.5, y:0, z:0, offset:0.4},
-        ];
-
-        return rotations[index];
-      }
 
       const makeAxisGrid = (node, label, units?) => {
         const helper = new AxisGridHelper(node, units);

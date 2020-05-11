@@ -1,8 +1,6 @@
 import mongoose from 'mongoose';
 import logger from '../log';
 import config from '../config';
-//var logger = require('../log');
-//var mongoose = require('mongoose');
 
 const options = {
     user: config.get('mongoose:username'),
