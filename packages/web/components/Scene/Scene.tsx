@@ -20,7 +20,6 @@ type State = {
   renderer: THREE.WebGLRenderer;
   camera: THREE.PerspectiveCamera;
   prevModelsId: [string?];
-  loops: number;
   stepBetweenFlowers: number;
 };
 
@@ -35,7 +34,6 @@ class Scene extends React.Component<Props & StoreProps, State> {
       renderer: new THREE.WebGLRenderer(),
       camera: new THREE.PerspectiveCamera(),
       prevModelsId: [],
-      loops: 1,
       stepBetweenFlowers: 0.6, //влияет на скорость закручивания
     };
   }
@@ -49,20 +47,6 @@ class Scene extends React.Component<Props & StoreProps, State> {
       camera: threeObj.camera,
     });
   }
-
-  createCenterPivot = () => {
-    const { scene } = this.state;
-    const centerPivot = new THREE.Mesh(
-      new THREE.SphereGeometry(1, 1, 1),
-      new THREE.MeshBasicMaterial({ color: 0xff0000 })
-    );
-
-    centerPivot.position.set(0, 1, 0);
-    centerPivot.scale.set(0.05, 0.05, 0.05);
-
-    scene.add(centerPivot);
-    return centerPivot;
-  };
 
   gatherBouquet(flowNum, url) {
     const { scene, renderer, camera, prevModelsId } = this.state;
@@ -84,7 +68,7 @@ class Scene extends React.Component<Props & StoreProps, State> {
     };
 
     const modelingBouquet = (numberOfFlowers: Number, source: string) => {
-      const { loops, stepBetweenFlowers } = this.state;
+      const { stepBetweenFlowers } = this.state;
 
       const polarToCortesian = (r: number, theta: number) => {
         return {
@@ -104,18 +88,23 @@ class Scene extends React.Component<Props & StoreProps, State> {
         //           e.name = `${i}`;
         //           prevModelsId.push(e.uuid);
 
-        //           // e.lookAt(0, -centerPivot.position.y, -centerPivot.position.z);
-
         let x = polarToCortesian(radius, theta).x;
         let y = polarToCortesian(radius, theta).y;
 
         theta += stepBetweenFlowers;
         radius = a + b * theta;
 
+        // fbxLoader.load(source, (model) => {
+        //   model.position.set(x, y, 0);
+        //   model.scale.set(0.02, 0.02, 0.02);
+
+        //   scene.add(model);
+        // });
+
         loader.load("public/models/Fantastic Fyyran.stl", (model) => {
           let mesh = new THREE.Mesh(model);
           mesh.position.set(x, y, 0);
-
+          mesh.lookAt(new THREE.Vector3(0, 0, 0.5));
           mesh.scale.set(0.02, 0.02, 0.02);
 
           scene.add(mesh);

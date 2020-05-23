@@ -16,8 +16,8 @@ export const loadModel = () => {
     1,
     1000
   );
-  camera.position.set(0, 3, 3);
-
+  camera.position.set(0, 3, 0);
+  camera.lookAt(new THREE.Vector3(0,0,0.5));
   // lights
   const light = new THREE.AmbientLight(0x505050);
   scene.add(light);
