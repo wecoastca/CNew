@@ -1,9 +1,9 @@
-import * as React from 'react';
+import * as React from "react";
 
-import Scene from '../Scene/Scene';
-import FlowersFormContainer from '../FlowersFormContainer/FlowersFormContainer';
+import Scene from "../Scene/Scene";
+import FlowersFormContainer from "../FlowersFormContainer/FlowersFormContainer";
 
-import './Content.css';
+import "./Content.css";
 
 export const Content = (props) => (
   <main className="content-wrapper">

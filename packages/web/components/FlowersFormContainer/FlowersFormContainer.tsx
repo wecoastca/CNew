@@ -1,25 +1,27 @@
-import * as React from 'react';
-import { connect } from 'react-redux';
+import * as React from "react";
+import { connect } from "react-redux";
 
-import './FlowersFormContainer.css';
-import DropDownControl from '../DropDownControl/DropDownControl';
-import InputControl from '../InputControl/InputControl';
-import GenerateButton from '../GenerateButton/GenerateButton';
-import gatherBouquet from '../../helpers/gatherBouquet';
+import "./FlowersFormContainer.css";
+import DropDownControl from "../DropDownControl/DropDownControl";
+import InputControl from "../InputControl/InputControl";
+import GenerateButton from "../GenerateButton/GenerateButton";
 
-import { FormState } from '../../reducers/formReducer';
+import { FormState } from "../../reducers/formReducer";
 
-type Props = {}
-type State = {FLOWERS_NAMES: Array<string>}
+type Props = {};
+type State = { FLOWERS_NAMES: Array<string> };
 
 type StoreProps = FormState;
 type StoreDispatch = {
   onFormSubmit?: (form: FormState) => void;
-}
+};
 // type State = {numberOfFlowers: number, FLOWERS_NAMES: Array<string>}
 
-class FlowersFormContainer extends React.Component<Props & StoreProps & StoreDispatch, State> {
-  constructor(props:Props) {
+class FlowersFormContainer extends React.Component<
+  Props & StoreProps & StoreDispatch,
+  State
+> {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
@@ -29,11 +31,11 @@ class FlowersFormContainer extends React.Component<Props & StoreProps & StoreDis
   }
 
   componentDidMount() {
-    fetch('http://localhost:8080/api/v1/flowers/', {
-      method: 'GET',
+    fetch("http://localhost:8080/api/v1/flowers/", {
+      method: "GET",
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
     })
       .then((response) => {
@@ -45,9 +47,10 @@ class FlowersFormContainer extends React.Component<Props & StoreProps & StoreDis
       .then((FLOWERS_LIST) => {
         const names = [];
 
-        FLOWERS_LIST && FLOWERS_LIST.map((flower) => {
-          names.push(flower.name);
-        });
+        FLOWERS_LIST &&
+          FLOWERS_LIST.map((flower) => {
+            names.push(flower.name);
+          });
         this.setState({ FLOWERS_NAMES: names });
       });
   }
@@ -56,12 +59,12 @@ class FlowersFormContainer extends React.Component<Props & StoreProps & StoreDis
     event.preventDefault();
     const { onFormSubmit } = this.props;
     const { FLOWERS_NAMES } = this.state;
-    fetch('http://localhost:8080/api/v1/flowers/name', {
-      method: 'POST',
+    fetch("http://localhost:8080/api/v1/flowers/name", {
+      method: "POST",
       body: JSON.stringify(FLOWERS_NAMES),
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
     }).then((response) => {
       response.json().then((data) => {
@@ -70,7 +73,7 @@ class FlowersFormContainer extends React.Component<Props & StoreProps & StoreDis
         // gatherBouquet(this.state.numberOfFlowers, data.flower.source);
       });
     });
-  }
+  };
 
   handleReset = (event) => {
     const { onFormSubmit } = this.props;
@@ -80,16 +83,16 @@ class FlowersFormContainer extends React.Component<Props & StoreProps & StoreDis
       // numberOfFlowers: 0,
       FLOWERS_NAMES: [],
     });
-  }
+  };
 
   handleFlowersNumber = (event) => {
     const { onFormSubmit } = this.props;
     onFormSubmit({ flowNum: event.target.value });
-  }
+  };
 
   handleFlowersType = (event) => {
     this.setState({ FLOWERS_NAMES: [event.target.value] });
-  }
+  };
 
   render() {
     return (
@@ -97,22 +100,14 @@ class FlowersFormContainer extends React.Component<Props & StoreProps & StoreDis
         <div className="inputs-wrapper">
           <div className="flowers-number">
             <p className="suggest-text">
-              1. Enter number of flowers
-              {' '}
-              <br />
+              1. Enter number of flowers <br />
               you want to see in bouquete.
             </p>
-            <InputControl
-              handleChange={this.handleFlowersNumber}
-            />
+            <InputControl handleChange={this.handleFlowersNumber} />
           </div>
           <div className="flowers-type">
             <p className="suggest-text">
-              2. Choose
-              {' '}
-              <b>main type</b>
-              {' '}
-              of flowers
+              2. Choose <b>main type</b> of flowers
               <br />
               you want to see in bouquete.
             </p>
@@ -123,11 +118,7 @@ class FlowersFormContainer extends React.Component<Props & StoreProps & StoreDis
           </div>
           <div className="generate">
             <p className="suggest-text">
-              3. Press
-              {' '}
-              <b>Generate</b>
-              {' '}
-              and wait for
+              3. Press <b>Generate</b> and wait for
               <br />
               magic.
             </p>
@@ -139,14 +130,17 @@ class FlowersFormContainer extends React.Component<Props & StoreProps & StoreDis
   }
 }
 
-const mapStateToProps = (state):StoreProps => ({
+const mapStateToProps = (state): StoreProps => ({
   flowNum: state.flowNum,
   source: state.source,
   isSubmited: state.isSubmited,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onFormSubmit: (form) => dispatch({ type: 'FORM/SUBMITED', value: form }),
+  onFormSubmit: (form) => dispatch({ type: "FORM/SUBMITED", value: form }),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(FlowersFormContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(FlowersFormContainer);
