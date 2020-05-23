@@ -18,7 +18,13 @@ type State = {
   renderer: THREE.WebGLRenderer;
   camera: THREE.PerspectiveCamera;
   prevModelsId: [string?];
+  radius: number;
+  turns: number;
+  objectsPerTurn: number;
+  degrees: number;
+  stepBetweenFlowers: number;
 };
+
 type StoreProps = FormState;
 type Props = {};
 class Scene extends React.Component<Props & StoreProps, State> {
@@ -30,6 +36,11 @@ class Scene extends React.Component<Props & StoreProps, State> {
       renderer: new THREE.WebGLRenderer(),
       camera: new THREE.PerspectiveCamera(),
       prevModelsId: [],
+      radius: 2,
+      turns: 3,
+      objectsPerTurn: 16,
+      degrees: 1.15,
+      stepBetweenFlowers: 0.1,
     };
   }
 
@@ -42,6 +53,20 @@ class Scene extends React.Component<Props & StoreProps, State> {
       camera: threeObj.camera,
     });
   }
+
+  createCenterPivot = () => {
+    const { scene } = this.state;
+    const centerPivot = new THREE.Mesh(
+      new THREE.SphereGeometry(1, 1, 1),
+      new THREE.MeshBasicMaterial({ color: 0xff0000 })
+    );
+
+    centerPivot.position.set(0, 1, 0);
+    centerPivot.scale.set(0.05, 0.05, 0.05);
+
+    scene.add(centerPivot);
+    return centerPivot;
+  };
 
   gatherBouquet(flowNum, url) {
     const { scene, renderer, camera, prevModelsId } = this.state;
@@ -63,28 +88,33 @@ class Scene extends React.Component<Props & StoreProps, State> {
     };
 
     const modelingBouquet = (numberOfFlowers: Number, source: string) => {
+      const {
+        radius,
+        turns,
+        objectsPerTurn,
+        degrees,
+        stepBetweenFlowers,
+      } = this.state;
+
       const circleModel = scene.getObjectByName("circle");
-      const circleModelPosition = circleModel.position;
 
-      const calculateCoordinates = (spiralStep, angle) => ({
-        x: (spiralStep / 2) * Math.PI * angle * Math.cos(angle),
-        z: (spiralStep / 2) * Math.PI * angle * Math.sin(angle),
-      });
+      const angleStep = (Math.PI * 2) / objectsPerTurn;
+      const centerPivot = this.createCenterPivot();
 
-      for (let i = 0; i < numberOfFlowers; i++) {
-        const xCoordinate = calculateCoordinates(0.2, (i * Math.PI) / 8).x;
-        const zCoordinate = calculateCoordinates(0.2, (i * Math.PI) / 8).z;
-
+      for (let i = 1; i < numberOfFlowers; i++) {
         fbxLoader.load(source, (e) => {
           e.name = `${i}`;
           prevModelsId.push(e.uuid);
 
           e.position.set(
-            circleModelPosition.x + xCoordinate,
-            circleModelPosition.y,
-            circleModelPosition.z + zCoordinate
+            Math.cos(angleStep * i) * radius * i * stepBetweenFlowers,
+            0,
+            Math.sin(angleStep * i) * radius * i * stepBetweenFlowers
           );
-          e.lookAt(centerPlane.position);
+
+          e.lookAt(0, centerPivot.position.y, centerPivot.position.z);
+          e.rotateX(degrees);
+
           e.scale.set(0.02, 0.02, 0.02);
 
           scene.add(e);
@@ -93,13 +123,6 @@ class Scene extends React.Component<Props & StoreProps, State> {
     };
 
     const fbxLoader = new FBXLoader();
-
-    var centerPlane = new THREE.Mesh(
-      new THREE.SphereGeometry(0.05, 0.05, 0.05),
-      new THREE.MeshBasicMaterial({ color: 0xff0000 })
-    );
-    centerPlane.position.set(0, 0, 0);
-    scene.add(centerPlane);
 
     removePreviousModels(flowNum);
     makeCircleModel(flowNum, scene);

@@ -9,7 +9,7 @@ const makeCircleModel = (numberOfFlowers, scene) => {
   const circle = new THREE.Mesh(geometry, material);
   circle.scale.set(0.01, 0.01, 0.01);
   circle.position.set(0, 0, 0);
-  circle.rotation.set(-1.55, 0, 0);
+  circle.rotation.set(0, 0, 0);
   circle.name = "circle";
   scene.add(circle);
 };
