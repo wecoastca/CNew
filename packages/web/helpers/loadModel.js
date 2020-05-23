@@ -16,7 +16,7 @@ export const loadModel = () => {
     0.25,
     16
   );
-  camera.position.set(0, 1.3, 3);
+  camera.position.set(3, 3, 3);
 
   // lights
   const light = new THREE.AmbientLight(0x505050);
@@ -57,7 +57,7 @@ export const loadModel = () => {
 
   container.appendChild(renderer.domElement);
 
-  camera.lookAt(0, 2, 1.5);
+  camera.lookAt(0, 0, 1.5);
 
   // controls
 

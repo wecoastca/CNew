@@ -85,7 +85,6 @@ class Scene extends React.Component<Props & StoreProps, State> {
             circleModelPosition.z + zCoordinate
           );
           e.lookAt(centerPlane.position);
-          e.rotateX(-35);
           e.scale.set(0.02, 0.02, 0.02);
 
           scene.add(e);
