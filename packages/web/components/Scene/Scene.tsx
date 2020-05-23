@@ -1,27 +1,26 @@
 import * as React from "react";
-import AxisGridHelper from "../../helpers/axisGridHelper";
-import { GUI } from "dat.gui";
 
 import "./Scene.css";
 
 import * as THREE from "three";
+
 import { connect } from "react-redux";
+
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
+import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js";
+
 import { loadModel } from "../../helpers/loadModel.js";
+import makeCircleModel from "../../helpers/makeCircleModel";
+
 import { FormState } from "../../reducers/formReducer";
 import SceneCanvas from "../SceneCanvas/SceneCanvas";
-
-import makeCircleModel from "../../helpers/makeCircleModel";
 
 type State = {
   scene: THREE.Scene;
   renderer: THREE.WebGLRenderer;
   camera: THREE.PerspectiveCamera;
   prevModelsId: [string?];
-  radius: number;
-  turns: number;
-  objectsPerTurn: number;
-  degrees: number;
+  loops: number;
   stepBetweenFlowers: number;
 };
 
@@ -36,11 +35,8 @@ class Scene extends React.Component<Props & StoreProps, State> {
       renderer: new THREE.WebGLRenderer(),
       camera: new THREE.PerspectiveCamera(),
       prevModelsId: [],
-      radius: 2,
-      turns: 3,
-      objectsPerTurn: 16,
-      degrees: 1.15,
-      stepBetweenFlowers: 0.1,
+      loops: 1,
+      stepBetweenFlowers: 0.6, //влияет на скорость закручивания
     };
   }
 
@@ -88,40 +84,44 @@ class Scene extends React.Component<Props & StoreProps, State> {
     };
 
     const modelingBouquet = (numberOfFlowers: Number, source: string) => {
-      const {
-        radius,
-        turns,
-        objectsPerTurn,
-        degrees,
-        stepBetweenFlowers,
-      } = this.state;
+      const { loops, stepBetweenFlowers } = this.state;
 
-      const circleModel = scene.getObjectByName("circle");
+      const polarToCortesian = (r: number, theta: number) => {
+        return {
+          x: r * Math.cos(theta),
+          y: r * Math.sin(theta),
+        };
+      };
 
-      const angleStep = (Math.PI * 2) / objectsPerTurn;
-      const centerPivot = this.createCenterPivot();
+      const loader = new STLLoader();
 
-      for (let i = 1; i < numberOfFlowers; i++) {
-        fbxLoader.load(source, (e) => {
-          e.name = `${i}`;
-          prevModelsId.push(e.uuid);
+      let theta = 0;
+      let a = 0.1; //влияет на увеличение шага спирали
+      let b = 0.05; //влияет на скорость увеличения расстояния между моделями
+      let radius = 0;
 
-          e.position.set(
-            Math.cos(angleStep * i) * radius * i * stepBetweenFlowers,
-            0,
-            Math.sin(angleStep * i) * radius * i * stepBetweenFlowers
-          );
+      for (let i = 0; i < numberOfFlowers; i++) {
+        //           e.name = `${i}`;
+        //           prevModelsId.push(e.uuid);
 
-          e.lookAt(0, centerPivot.position.y, centerPivot.position.z);
-          e.rotateX(degrees);
+        //           // e.lookAt(0, -centerPivot.position.y, -centerPivot.position.z);
 
-          e.scale.set(0.02, 0.02, 0.02);
+        let x = polarToCortesian(radius, theta).x;
+        let y = polarToCortesian(radius, theta).y;
 
-          scene.add(e);
+        theta += stepBetweenFlowers;
+        radius = a + b * theta;
+
+        loader.load("public/models/Fantastic Fyyran.stl", (model) => {
+          let mesh = new THREE.Mesh(model);
+          mesh.position.set(x, y, 0);
+
+          mesh.scale.set(0.02, 0.02, 0.02);
+
+          scene.add(mesh);
         });
       }
     };
-
     const fbxLoader = new FBXLoader();
 
     removePreviousModels(flowNum);
