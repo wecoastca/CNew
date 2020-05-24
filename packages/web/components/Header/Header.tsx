@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Button, Layout, Row, Space } from "antd";
 
-import "./Header.css";
+import styles from "./styles.styl";
 
 import Logo from "../Logo/Logo";
 import NavMenu from "../NavMenu/NavMenu";
@@ -10,8 +10,8 @@ import { SearchLine } from "../SearchLine/SearchLine";
 export const Header = () => {
   return (
     <React.Fragment>
-      <Layout>
-        <Row justify="space-between">
+      <Layout className={styles.header}>
+        <Row justify="space-between" className={styles.row}>
           <Space>
             <Logo />
             <NavMenu />
@@ -26,5 +26,5 @@ export const Header = () => {
         </Row>
       </Layout>
     </React.Fragment>
- );
+  );
 };

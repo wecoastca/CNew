@@ -2,6 +2,7 @@ const path = require('path');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
 	mode: "development",
@@ -33,6 +34,20 @@ module.exports = {
 				use: ['style-loader', 'css-loader']
 			},
 			{
+				test: /\.styl$/,
+				use: [
+					MiniCssExtractPlugin.loader,
+					{
+						loader: 'css-loader',
+						options: {
+						  modules: true,
+						  importLoaders: 1
+						}
+					  },
+					  'stylus-loader'
+				],
+			},
+			{
 				enforce: "pre",
 				test: /\.js$/,
 				loader: "source-map-loader"
@@ -56,7 +71,11 @@ module.exports = {
 		new CopyPlugin([{
 			from: path.resolve(__dirname,'public'),
 			to:'public'
-		}])
+		}]),
+		new MiniCssExtractPlugin({
+			filename: '[name].css',
+			chunkFilename: '[id].css'
+		  })
 	],
 	devServer: {
 		contentBase: path.join(__dirname, 'build'),
