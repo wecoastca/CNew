@@ -13,7 +13,7 @@ const DropDownControl = (props: Props) => {
     <div className="dropdown-control">
       <select
         className="dropdown-control_select"
-        onChange={this.props.handleChange}
+        onChange={props.handleChange}
       >
         {FLOWERS_LIST &&
           FLOWERS_LIST.map((flower) => (

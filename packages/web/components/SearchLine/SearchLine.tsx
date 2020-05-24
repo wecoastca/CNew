@@ -1,18 +1,20 @@
 import * as React from "react";
+import { Input } from "antd";
+
 import "./SearchLine.css";
-import search from "public/images/search.png";
+
+const { Search } = Input;
 
 export const SearchLine = () => {
   return (
-    <div className="search-line">
-      <button className="search-line__button">
-        <img src={search} alt="search" />
-      </button>
-      <input
-        type="text"
-        className="search-line__input"
-        placeholder="Enter name of model..."
+    <>
+      <Search
+        placeholder="введите название цветка"
+        onSearch={(value) => {
+          console.log(value);
+        }}
+        enterButton
       />
-    </div>
+    </>
   );
 };
