@@ -11,13 +11,13 @@ export const loadModel = () => {
 
   // cameras
   const camera = new THREE.PerspectiveCamera(
-    36,
+    60,
     container.clientWidth / container.clientHeight,
-    0.25,
-    16
+    1,
+    1000
   );
-  camera.position.set(3, 3, 3);
-
+  camera.position.set(0, 3, 0);
+  camera.lookAt(new THREE.Vector3(0,0,0.5));
   // lights
   const light = new THREE.AmbientLight(0x505050);
   scene.add(light);
@@ -57,12 +57,13 @@ export const loadModel = () => {
 
   container.appendChild(renderer.domElement);
 
-  camera.lookAt(0, 0, 1.5);
-
   // controls
 
   const controls = new OrbitControls(camera, renderer.domElement);
-  controls.target.set(0, 1, 0);
+  controls.target.set(0, 0,0.5);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.25;
+  controls.enableZoom = true;
   controls.update();
 
   // add visual axes
@@ -78,7 +79,7 @@ export const loadModel = () => {
     const yFrameGeometry = new THREE.Geometry();
     yFrameGeometry.vertices.push(
       new THREE.Vector3(0, 0, 0),
-      new THREE.Vector3(0, 0, 0)
+      new THREE.Vector3(0, 1, 0)
     );
     const zFrameGeometry = new THREE.Geometry();
     zFrameGeometry.vertices.push(
