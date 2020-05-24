@@ -85,8 +85,6 @@ class Scene extends React.Component<Props & StoreProps, State> {
       let radius = 0;
 
       for (let i = 0; i < numberOfFlowers; i++) {
-        //           e.name = `${i}`;
-        //           prevModelsId.push(e.uuid);
 
         let x = polarToCortesian(radius, theta).x;
         let y = polarToCortesian(radius, theta).y;
@@ -94,10 +92,10 @@ class Scene extends React.Component<Props & StoreProps, State> {
         theta += stepBetweenFlowers;
         radius = a + b * theta;
 
-        // fbxLoader.load(source, (model) => {
+        // fbxLoader.load('public/models/rose/untitled.fbx', (model) => {
         //   model.position.set(x, y, 0);
         //   model.scale.set(0.02, 0.02, 0.02);
-
+        //   model.lookAt(new THREE.Vector3(0, 0, 0.5));
         //   scene.add(model);
         // });
 
