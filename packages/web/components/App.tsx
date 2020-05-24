@@ -1,15 +1,14 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { Header } from './Header/Header';
-import { Content } from './Content/Content';
+import { Header } from "./Header/Header";
+import { Content } from "./Content/Content";
 
-export default class App extends React.PureComponent {
-  render() {
-    return (
-      <div>
-        <Header />
-        <Content />
-      </div>
-    );
-  }
-}
+const App = () => {
+  return (
+    <div>
+      <Header />
+      <Content />
+    </div>
+  );
+};
+export default App;

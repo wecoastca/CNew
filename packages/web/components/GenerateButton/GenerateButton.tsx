@@ -1,10 +1,12 @@
-import * as React from 'react';
-import './GenerateButton.css';
+import * as React from "react";
+import "./GenerateButton.css";
 
-export default class GenerateButton extends React.Component {
-  render() {
-    return (
-      <button type="submit" className="gen-but">Generate</button>
-    );
-  }
-}
+const GenerateButton = () => {
+  return (
+    <button type="submit" className="gen-but">
+      Generate
+    </button>
+  );
+};
+
+export default GenerateButton;

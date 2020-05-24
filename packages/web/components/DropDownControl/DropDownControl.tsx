@@ -1,31 +1,29 @@
-import * as React from 'react';
-import './DropDownControl.css';
+import * as React from "react";
+import "./DropDownControl.css";
 
 type Props = {
-    handleChange : (event: React.ChangeEvent) => void,
-    FLOWERS_LIST: Array<string>
-}
-export default class DropDownControl extends React.Component<Props> {
-  constructor(props:Props) {
-    super(props);
-  }
+  handleChange: (event: React.ChangeEvent) => void;
+  FLOWERS_LIST: Array<string>;
+};
 
-  render() {
-    const { FLOWERS_LIST } = this.props;
+const DropDownControl = (props: Props) => {
+  const { FLOWERS_LIST } = props;
 
-    return (
-      <div className="dropdown-control">
-        <select
-          className="dropdown-control_select"
-          onChange={this.props.handleChange}
-        >
-          {FLOWERS_LIST && FLOWERS_LIST.map((flower) => (
+  return (
+    <div className="dropdown-control">
+      <select
+        className="dropdown-control_select"
+        onChange={this.props.handleChange}
+      >
+        {FLOWERS_LIST &&
+          FLOWERS_LIST.map((flower) => (
             <option key={flower} value={flower}>
               {flower}
             </option>
           ))}
-        </select>
-      </div>
-    );
-  }
-}
+      </select>
+    </div>
+  );
+};
+
+export default DropDownControl;

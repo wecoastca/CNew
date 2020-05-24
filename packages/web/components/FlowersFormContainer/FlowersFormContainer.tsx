@@ -15,7 +15,6 @@ type StoreProps = FormState;
 type StoreDispatch = {
   onFormSubmit?: (form: FormState) => void;
 };
-// type State = {numberOfFlowers: number, FLOWERS_NAMES: Array<string>}
 
 class FlowersFormContainer extends React.Component<
   Props & StoreProps & StoreDispatch,
@@ -25,7 +24,6 @@ class FlowersFormContainer extends React.Component<
     super(props);
 
     this.state = {
-      //   numberOfFlowers: 0,
       FLOWERS_NAMES: [],
     };
   }
@@ -70,7 +68,6 @@ class FlowersFormContainer extends React.Component<
       response.json().then((data) => {
         console.log(data);
         onFormSubmit({ source: data.flower.source, isSubmited: true });
-        // gatherBouquet(this.state.numberOfFlowers, data.flower.source);
       });
     });
   };
@@ -80,7 +77,6 @@ class FlowersFormContainer extends React.Component<
     event.preventDefault();
     onFormSubmit({ flowNum: 0, isSubmited: false });
     this.setState({
-      // numberOfFlowers: 0,
       FLOWERS_NAMES: [],
     });
   };

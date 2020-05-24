@@ -17,7 +17,7 @@ export const loadModel = () => {
     1000
   );
   camera.position.set(0, 3, 0);
-  camera.lookAt(new THREE.Vector3(0,0,0.5));
+  camera.lookAt(new THREE.Vector3(0, 0, 0.5));
   // lights
   const light = new THREE.AmbientLight(0x505050);
   scene.add(light);
@@ -60,7 +60,7 @@ export const loadModel = () => {
   // controls
 
   const controls = new OrbitControls(camera, renderer.domElement);
-  controls.target.set(0, 0,0.5);
+  controls.target.set(0, 0, 0.5);
   controls.enableDamping = true;
   controls.dampingFactor = 0.25;
   controls.enableZoom = true;
