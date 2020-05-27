@@ -92,15 +92,16 @@ class Scene extends React.Component<Props & StoreProps, State> {
         theta += stepBetweenFlowers;
         radius = a + b * theta;
 
-        // fbxLoader.load('public/models/rose/untitled.fbx', (model) => {
+        // fbxLoader.load('public/models/rose/rose_final.fbx', (model) => {
         //   model.position.set(x, y, 0);
-        //   model.scale.set(0.02, 0.02, 0.02);
+        //   model.scale.set(0.01, 0.01, 0.01);
         //   model.lookAt(new THREE.Vector3(0, 0, 0.5));
         //   scene.add(model);
         // });
 
         loader.load("public/models/Fantastic Fyyran.stl", (model) => {
-          let mesh = new THREE.Mesh(model);
+          var material = new THREE.MeshPhongMaterial( { color: 0xff033e, specular: 0x111111, shininess: 200 } );
+          let mesh = new THREE.Mesh(model, material);
           mesh.position.set(x, y, 0);
           mesh.lookAt(new THREE.Vector3(0, 0, 0.5));
           mesh.scale.set(0.02, 0.02, 0.02);
