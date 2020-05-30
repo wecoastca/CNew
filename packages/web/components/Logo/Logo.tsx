@@ -1,16 +1,16 @@
-import * as React from 'react';
-import Icon from '@ant-design/icons';
-import LogoPng from './LogoPng';
+import * as React from "react";
+import Icon from "@ant-design/icons";
+import LogoPng from "./LogoPng";
 
-import "./Logo.css";
+import * as styles from "./styles.styl";
 
 const Logo = () => {
-  return(
-    <div className="logo">
-      <Icon className="png" component={LogoPng}/>
-      <span>CONSTRUCTOR</span>
+  return (
+    <div className={styles.logotip}>
+      <Icon className="png" component={LogoPng} />
+      <span className={styles.brandname}>CONSTRUCTOR</span>
     </div>
-  )
-}
+  );
+};
 
 export default Logo;

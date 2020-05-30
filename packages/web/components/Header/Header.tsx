@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Button, Layout, Row, Space } from "antd";
 
-import styles from "./styles.styl";
+import * as styles from "./styles.styl";
 
 import Logo from "../Logo/Logo";
 import NavMenu from "../NavMenu/NavMenu";

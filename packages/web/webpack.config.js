@@ -48,6 +48,26 @@ module.exports = {
 				],
 			},
 			{
+				test: /\.less$/,
+				use: [
+				  MiniCssExtractPlugin.loader,
+				  { loader: 'css-loader' },
+				  {
+					loader: 'less-loader',
+					options: {
+					  lessOptions: {
+						modifyVars: {
+						  'primary-color': '#F7D0CB',
+						  'border-radius-base': '2px',
+						  'layout-header-background': '#F7D0CB'
+						},
+						javascriptEnabled: true
+					  }
+					}
+				  }
+				]
+			},
+			{
 				enforce: "pre",
 				test: /\.js$/,
 				loader: "source-map-loader"
