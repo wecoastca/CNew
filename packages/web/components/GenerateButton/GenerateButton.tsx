@@ -1,11 +1,13 @@
 import * as React from "react";
 import "./GenerateButton.css";
 
+import {Button} from 'antd';
+
 const GenerateButton = () => {
   return (
-    <button type="submit" className="gen-but">
+    <Button type="primary" className="gen-but">
       Generate
-    </button>
+    </Button>
   );
 };
 

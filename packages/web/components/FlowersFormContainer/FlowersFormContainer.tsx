@@ -8,6 +8,8 @@ import GenerateButton from "../GenerateButton/GenerateButton";
 
 import { FormState } from "../../reducers/formReducer";
 
+import { Card, Button, Input, Form, Space } from "antd";
+
 type Props = {};
 type State = { FLOWERS_NAMES: Array<string> };
 
@@ -92,36 +94,33 @@ class FlowersFormContainer extends React.Component<
 
   render() {
     return (
-      <form className="flowers-form" onSubmit={this.handleSubmit}>
-        <div className="inputs-wrapper">
-          <div className="flowers-number">
-            <p className="suggest-text">
-              1. Enter number of flowers <br />
-              you want to see in bouquete.
-            </p>
-            <InputControl handleChange={this.handleFlowersNumber} />
-          </div>
-          <div className="flowers-type">
-            <p className="suggest-text">
-              2. Choose <b>main type</b> of flowers
-              <br />
-              you want to see in bouquete.
-            </p>
+      <Form className="flowers-form" onFinish={this.handleSubmit}>
+        <Space align="center" direction="horizontal">
+          <Card
+            className="flowers-number"
+            title="1. Enter number of flowers
+              you want to see in bouquet."
+          >
+            <Input onChange={this.handleFlowersNumber} />
+          </Card>
+          <Card
+            className="flowers-type"
+            title="2. Choose main type of flowers you want to see in bouquete."
+          >
             <DropDownControl
               handleChange={this.handleFlowersType}
               FLOWERS_LIST={this.state.FLOWERS_NAMES}
             />
-          </div>
-          <div className="generate">
-            <p className="suggest-text">
-              3. Press <b>Generate</b> and wait for
-              <br />
-              magic.
-            </p>
+          </Card>
+          <Card
+            className="generate"
+            title=" 3. Press Generate and wait for
+          magic."
+          >
             <GenerateButton />
-          </div>
-        </div>
-      </form>
+          </Card>
+        </Space>
+      </Form>
     );
   }
 }

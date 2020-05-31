@@ -10,7 +10,7 @@ module.exports = {
 		"app": "./index.tsx"
 	},
 	resolve: {
-		extensions: [".ts", ".tsx", ".js", ".css"],
+		extensions: [".ts", ".tsx", ".js", ".css", ".styl"],
 		alias: {
 			public: path.join(__dirname,'public/')
 		}
@@ -49,6 +49,9 @@ module.exports = {
 			},
 			{
 				test: /\.less$/,
+				include: [
+					path.resolve(__dirname, 'node_modules')
+				],
 				use: [
 				  MiniCssExtractPlugin.loader,
 				  { loader: 'css-loader' },
