@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { Header } from './Header/Header';
-import { Content } from './Content/Content';
+import { Header } from './modules/Header/Header';
+import { Content } from './modules/Content/Content';
 
 export default class App extends React.PureComponent {
   render() {

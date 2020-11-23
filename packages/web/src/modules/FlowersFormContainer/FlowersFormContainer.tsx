@@ -6,26 +6,48 @@ import DropDownControl from "../DropDownControl/DropDownControl";
 import InputControl from "../InputControl/InputControl";
 import GenerateButton from "../GenerateButton/GenerateButton";
 
-import { FormState } from "../../reducers/formReducer";
+import { FormState } from "../../store/reducers/formReducer";
 
-type Props = {};
+import { Input, Form, Button, Row, Space } from "antd";
+
 type State = { FLOWERS_NAMES: Array<string> };
 
 type StoreProps = FormState;
 type StoreDispatch = {
   onFormSubmit?: (form: FormState) => void;
 };
-// type State = {numberOfFlowers: number, FLOWERS_NAMES: Array<string>}
 
-class FlowersFormContainer extends React.Component<
-  Props & StoreProps & StoreDispatch,
+const FlowersFormContainer = (props) => {
+  return (
+      <Form layout="horizontal">
+        <Form.Item
+          label={"1. Enter number of flowers you want to see in bouquete."}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label={"2. Choose main type of flowers you want to see in bouquete."}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item label={"3. Press Generate and wait for magic."}>
+          <Input />
+        </Form.Item>
+        <Form.Item label={"Generate"}>
+          <Button />
+        </Form.Item>
+      </Form>
+  );
+};
+
+class FlowersFormCiner extends React.Component<
+  StoreProps & StoreDispatch,
   State
 > {
-  constructor(props: Props) {
+  constructor(props) {
     super(props);
 
     this.state = {
-      //   numberOfFlowers: 0,
       FLOWERS_NAMES: [],
     };
   }
@@ -68,9 +90,7 @@ class FlowersFormContainer extends React.Component<
       },
     }).then((response) => {
       response.json().then((data) => {
-        console.log(data);
         onFormSubmit({ source: data.flower.source, isSubmited: true });
-        // gatherBouquet(this.state.numberOfFlowers, data.flower.source);
       });
     });
   };
@@ -80,7 +100,6 @@ class FlowersFormContainer extends React.Component<
     event.preventDefault();
     onFormSubmit({ flowNum: 0, isSubmited: false });
     this.setState({
-      // numberOfFlowers: 0,
       FLOWERS_NAMES: [],
     });
   };
@@ -103,13 +122,12 @@ class FlowersFormContainer extends React.Component<
               1. Enter number of flowers <br />
               you want to see in bouquete.
             </p>
+
             <InputControl handleChange={this.handleFlowersNumber} />
           </div>
           <div className="flowers-type">
             <p className="suggest-text">
-              2. Choose <b>main type</b> of flowers
-              <br />
-              you want to see in bouquete.
+              2. Choose main type of flowers you want to see in bouquete.
             </p>
             <DropDownControl
               handleChange={this.handleFlowersType}
@@ -117,11 +135,7 @@ class FlowersFormContainer extends React.Component<
             />
           </div>
           <div className="generate">
-            <p className="suggest-text">
-              3. Press <b>Generate</b> and wait for
-              <br />
-              magic.
-            </p>
+            <p className="suggest-text"></p>
             <GenerateButton />
           </div>
         </div>

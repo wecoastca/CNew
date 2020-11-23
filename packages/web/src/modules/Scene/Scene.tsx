@@ -12,7 +12,7 @@ import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js";
 import { loadModel } from "../../helpers/loadModel.js";
 import makeCircleModel from "../../helpers/makeCircleModel";
 
-import { FormState } from "../../reducers/formReducer";
+import { FormState } from "../../store/reducers/formReducer";
 import SceneCanvas from "../SceneCanvas/SceneCanvas";
 
 type State = {
